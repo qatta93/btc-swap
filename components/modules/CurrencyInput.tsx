@@ -1,6 +1,5 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import Image from "next/image";
 import type { CryptoOption } from "@/types/crypto";
 import Input from "@/components/atoms/Input";
@@ -10,7 +9,7 @@ interface CurrencyInputProps {
     onChange: (value: string) => void;
     crypto: CryptoOption;
     label: "Sell" | "Buy";
-    amount?: number;
+    conversionRate?: number;
 }
 
 export function CurrencyInput({
@@ -18,7 +17,12 @@ export function CurrencyInput({
   onChange,
   crypto,
   label,
+  conversionRate,
 }: CurrencyInputProps) {
+    const formattedRate = conversionRate?.toLocaleString(undefined, {
+        maximumFractionDigits: 8,
+    });
+
     return (
         <div className="flex flex-col w-full">
       <span className="text-sm text-muted-foreground font-medium mb-1">
@@ -38,9 +42,14 @@ export function CurrencyInput({
                     <span className="font-semibold">{crypto.symbol}</span>
                 </div>
             </div>
-            <span className="text-xs text-muted-foreground mt-1">
-        1 {crypto.symbol} = {value}
-      </span>
+
+            {conversionRate && (
+                <div className="text-xs text-muted-foreground mt-1 space-y-0.5">
+                    <div>
+                        1 {crypto.symbol} = {formattedRate}
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

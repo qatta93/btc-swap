@@ -1,14 +1,10 @@
+"use client";
+
 import React from "react";
 import { CurrencyInput } from "@/components/modules/CurrencyInput";
 import { motion } from "framer-motion";
 import { ArrowUpDown } from "lucide-react";
-
-type Crypto = {
-    id: string;
-    name: string;
-    symbol: string;
-    icon: string;
-};
+import type { CryptoOption } from "@/types/crypto";
 
 interface CardSideProps {
     isFront: boolean;
@@ -16,8 +12,8 @@ interface CardSideProps {
     buyAmount: string;
     sellValue: number;
     buyValue: number;
-    sellCrypto: Crypto;
-    buyCrypto: Crypto;
+    sellCrypto: CryptoOption;
+    buyCrypto: CryptoOption;
     isFlipping: boolean;
     iconRotation: number;
     setSellAmount: (val: string) => void;
@@ -26,53 +22,51 @@ interface CardSideProps {
 }
 
 export const CardSide = ({
-  isFront,
-  sellAmount,
-  buyAmount,
-  sellValue,
-  buyValue,
-  sellCrypto,
-  buyCrypto,
-  isFlipping,
-  iconRotation,
-  setSellAmount,
-  setBuyAmount,
-  handleSwap,
-}: CardSideProps) => {
+     isFront,
+     sellAmount,
+     buyAmount,
+     sellValue,
+     buyValue,
+     sellCrypto,
+     buyCrypto,
+     isFlipping,
+     iconRotation,
+     setSellAmount,
+     setBuyAmount,
+     handleSwap,
+                         }: CardSideProps) => {
     const topAmount = isFront ? sellAmount : buyAmount;
     const bottomAmount = isFront ? buyAmount : sellAmount;
     const topCrypto = isFront ? sellCrypto : buyCrypto;
     const bottomCrypto = isFront ? buyCrypto : sellCrypto;
-    const topValue = isFront ? sellValue : buyValue;
-    const bottomValue = isFront ? buyValue : sellValue;
 
-    const handleTopChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleTopChange = (value: string) => {
         if (isFront) {
-            setSellAmount(e.target.value);
+            setSellAmount(value);
         } else {
-            setBuyAmount(e.target.value);
+            setBuyAmount(value);
         }
     };
 
-    const handleBottomChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleBottomChange = (value: string) => {
         if (isFront) {
-            setBuyAmount(e.target.value);
+            setBuyAmount(value);
         } else {
-            setSellAmount(e.target.value);
+            setSellAmount(value);
         }
     };
 
     return (
         <div className="absolute w-full h-full p-5 backface-hidden">
             <CurrencyInput
-                amount={topAmount}
                 crypto={topCrypto}
                 label="Sell"
-                value={topValue}
+                value={topAmount}
                 onChange={handleTopChange}
+                // TODO: change the rate
+                conversionRate={.7}
             />
 
-            {/* Swap Button */}
             <div className="flex justify-center -my-2 relative z-10">
                 <motion.button
                     onClick={handleSwap}
@@ -88,11 +82,12 @@ export const CardSide = ({
             </div>
 
             <CurrencyInput
-                amount={bottomAmount}
                 crypto={bottomCrypto}
                 label="Buy"
-                value={bottomValue}
+                value={bottomAmount}
                 onChange={handleBottomChange}
+                // TODO: change the rate
+                conversionRate={50}
             />
         </div>
     );

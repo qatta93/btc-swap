@@ -1,30 +1,36 @@
-"use client"
+'use client'
 
-import type React from "react"
-
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { Button } from "@/components/atoms/Button"
-import CardSide from "@/components/atoms/CardSide";
-import {cryptoOptions} from "@/data/cryptoOptions";
+import { motion } from 'framer-motion'
+import { useState } from 'react'
+import CardSide from '@/components/atoms/CardSide'
+import { Button } from '@/components/atoms/Button'
+import { cryptoOptions } from '@/data/cryptoOptions'
+import { useExchangeRate } from '@/hooks/useExchangeRate'
+import { useSwapLogic } from '@/hooks/useSwapLogic'
 
 export default function SwapCard() {
-    const [sellAmount, setSellAmount] = useState("0.16495")
-    const [buyAmount, setBuyAmount] = useState("7")
-    const [sellCrypto, setSellCrypto] = useState(cryptoOptions[1])
-    const [buyCrypto, setBuyCrypto] = useState(cryptoOptions[0])
+    const { rate, error } = useExchangeRate()
+    const exchangeRate = rate || 27000 // fallback, jeśli API zawiedzie
+
+    const {
+        sellAmount,
+        buyAmount,
+        handleSellChange,
+        handleBuyChange,
+        isReversed,
+        toggleSwapDirection,
+    } = useSwapLogic(exchangeRate)
+
     const [isFlipped, setIsFlipped] = useState(false)
     const [isFlipping, setIsFlipping] = useState(false)
     const [iconRotation, setIconRotation] = useState(0)
-
-    const sellValue = Number.parseFloat(sellAmount) * 107030
-    const buyValue = Number.parseFloat(buyAmount) * 2506
 
     const handleSwap = () => {
         if (isFlipping) return
         setIsFlipping(true)
 
         setIsFlipped(!isFlipped)
+        toggleSwapDirection()
 
         setTimeout(() => {
             setIconRotation(isFlipped ? 0 : 180)
@@ -32,43 +38,46 @@ export default function SwapCard() {
         }, 600)
     }
 
+    const sellCrypto = isReversed ? cryptoOptions[1] : cryptoOptions[0]
+    const buyCrypto = isReversed ? cryptoOptions[0] : cryptoOptions[1]
+
     return (
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
             <div className="relative perspective-1000">
                 <motion.div
                     className="relative preserve-3d"
                     animate={{ rotateX: isFlipped ? 180 : 0 }}
-                    transition={{ duration: 0.6, ease: "easeInOut" }}
-                    style={{ height: "280px" }}
+                    transition={{ duration: 0.6, ease: 'easeInOut' }}
+                    style={{ height: '280px' }}
                 >
                     <CardSide
                         isFront={true}
                         sellAmount={sellAmount}
                         buyAmount={buyAmount}
-                        sellValue={sellValue}
-                        buyValue={buyValue}
                         sellCrypto={sellCrypto}
                         buyCrypto={buyCrypto}
+                        handleSwap={handleSwap}
                         isFlipping={isFlipping}
                         iconRotation={iconRotation}
-                        setSellAmount={setSellAmount}
-                        setBuyAmount={setBuyAmount}
-                        handleSwap={handleSwap}
+                        setSellAmount={handleSellChange}
+                        setBuyAmount={handleBuyChange}
+                        sellValue={rate ?? 0}
+                        buyValue={rate ? 1 / rate : 0}
                     />
                     <div className="absolute w-full h-full rotateX-180 backface-hidden">
                         <CardSide
                             isFront={false}
                             sellAmount={sellAmount}
                             buyAmount={buyAmount}
-                            sellValue={sellValue}
-                            buyValue={buyValue}
                             sellCrypto={sellCrypto}
                             buyCrypto={buyCrypto}
+                            handleSwap={handleSwap}
                             isFlipping={isFlipping}
                             iconRotation={iconRotation}
-                            setSellAmount={setSellAmount}
-                            setBuyAmount={setBuyAmount}
-                            handleSwap={handleSwap}
+                            setSellAmount={handleSellChange}
+                            setBuyAmount={handleBuyChange}
+                            sellValue={rate ?? 0}
+                            buyValue={rate ? 1 / rate : 0}
                         />
                     </div>
                 </motion.div>
@@ -77,6 +86,11 @@ export default function SwapCard() {
                 <Button className="w-full py-6 text-lg font-medium bg-pink-500 hover:bg-pink-600 text-white rounded-xl">
                     Get started
                 </Button>
+                {error && (
+                    <p className="text-xs text-red-500 text-center mt-2">
+                        Error fetching rate: {error}
+                    </p>
+                )}
             </div>
         </div>
     )
