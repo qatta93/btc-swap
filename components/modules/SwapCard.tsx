@@ -5,12 +5,9 @@ import { useState } from 'react'
 import CardSide from '@/components/atoms/CardSide'
 import { Button } from '@/components/atoms/Button'
 import { cryptoOptions } from '@/data/cryptoOptions'
-import { useExchangeRate } from '@/hooks/useExchangeRate'
 import { useSwapLogic } from '@/hooks/useSwapLogic'
 
 export default function SwapCard() {
-    const { rate, error } = useExchangeRate()
-    const exchangeRate = rate || 27000 // fallback, jeśli API zawiedzie
 
     const {
         sellAmount,
@@ -19,7 +16,9 @@ export default function SwapCard() {
         handleBuyChange,
         isReversed,
         toggleSwapDirection,
-    } = useSwapLogic(exchangeRate)
+        rate,
+        error
+    } = useSwapLogic()
 
     const [isFlipped, setIsFlipped] = useState(false)
     const [isFlipping, setIsFlipping] = useState(false)

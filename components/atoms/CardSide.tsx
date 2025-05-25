@@ -5,6 +5,7 @@ import { CurrencyInput } from "@/components/modules/CurrencyInput";
 import { motion } from "framer-motion";
 import { ArrowUpDown } from "lucide-react";
 import type { CryptoOption } from "@/types/crypto";
+import {useExchangeRate} from "@/hooks/useExchangeRate";
 
 interface CardSideProps {
     isFront: boolean;
@@ -25,8 +26,6 @@ export const CardSide = ({
      isFront,
      sellAmount,
      buyAmount,
-     sellValue,
-     buyValue,
      sellCrypto,
      buyCrypto,
      isFlipping,
@@ -56,6 +55,10 @@ export const CardSide = ({
         }
     };
 
+    const { rate } = useExchangeRate(sellCrypto.id, buyCrypto.id);
+
+    const conversionRate = rate ?? undefined;
+
     return (
         <div className="absolute w-full h-full p-5 backface-hidden">
             <CurrencyInput
@@ -63,8 +66,7 @@ export const CardSide = ({
                 label="Sell"
                 value={topAmount}
                 onChange={handleTopChange}
-                // TODO: change the rate
-                conversionRate={0.7}
+                conversionRate={conversionRate}
                 targetCurrencySymbol={bottomCrypto.symbol}
             />
 
@@ -87,8 +89,7 @@ export const CardSide = ({
                 label="Buy"
                 value={bottomAmount}
                 onChange={handleBottomChange}
-                // TODO: change the rate
-                conversionRate={50}
+                conversionRate={conversionRate ? 1 / conversionRate : undefined}
                 targetCurrencySymbol={topCrypto.symbol}
             />
         </div>

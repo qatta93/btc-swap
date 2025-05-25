@@ -1,3 +1,5 @@
+import {cryptoOptions} from "@/data/cryptoOptions";
+
 export type CryptoOption = {
     id: string;
     name: string;
@@ -5,3 +7,5 @@ export type CryptoOption = {
     icon: string;
     svg: string;
 }
+
+export type CryptoId = typeof cryptoOptions[number]["id"];

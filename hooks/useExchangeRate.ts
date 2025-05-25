@@ -1,44 +1,53 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import type { CryptoId } from '@/types/crypto'
 
-export function useExchangeRate() {
+export function useExchangeRate(fromId: CryptoId, toId: CryptoId) {
     const [rate, setRate] = useState<number | null>(null)
     const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
+        if (!fromId || !toId) return
+
+        if (fromId === toId) {
+            setRate(1)
+            return
+        }
+
         async function fetchRate() {
             try {
-                // Primary API: CoinGecko
+                const fromGecko = mapToCoinGeckoId(fromId)
+                const toGecko = mapToCoinGeckoSymbol(toId)
+
                 const res = await fetch(
-                    'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd'
+                    `https://api.coingecko.com/api/v3/simple/price?ids=${fromGecko}&vs_currencies=${toGecko}`
                 )
 
                 if (!res.ok) throw new Error('CoinGecko error')
 
                 const data = await res.json()
-                const usdRate = data?.bitcoin?.usd
+                const directRate = data?.[fromGecko]?.[toGecko]
 
-                if (!usdRate) throw new Error('CoinGecko returned no rate')
+                if (!directRate) throw new Error('Invalid CoinGecko response')
 
-                setRate(usdRate)
+                setRate(directRate)
             } catch (err: any) {
                 console.warn('CoinGecko failed:', err.message)
 
-                // Fallback API: Coinbase
                 try {
-                    const fallbackRes = await fetch(
-                        'https://api.coinbase.com/v2/exchange-rates?currency=BTC'
+                    const res = await fetch(
+                        `https://api.coinbase.com/v2/exchange-rates?currency=${fromId.toUpperCase()}`
                     )
 
-                    if (!fallbackRes.ok) throw new Error('Coinbase error')
+                    if (!res.ok) throw new Error('Coinbase error')
 
-                    const fallbackData = await fallbackRes.json()
-                    const usdRate = fallbackData?.data?.rates?.USD
+                    const data = await res.json()
+                    const fallbackRate = data?.data?.rates?.[toId.toUpperCase()]
 
-                    if (!usdRate) throw new Error('Coinbase returned no rate')
+                    if (!fallbackRate) throw new Error('Coinbase missing rate')
 
-                    setRate(Number(usdRate))
+                    setRate(Number(fallbackRate))
                 } catch (fallbackErr: any) {
                     console.error('Fallback also failed:', fallbackErr.message)
                     setError(fallbackErr.message)
@@ -47,7 +56,24 @@ export function useExchangeRate() {
         }
 
         fetchRate()
-    }, [])
+    }, [fromId, toId])
 
     return { rate, error }
+}
+
+
+function mapToCoinGeckoId(id: CryptoId): string {
+    const map: Record<CryptoId, string> = {
+        btc: 'bitcoin',
+        usd: 'usd',
+    }
+    return map[id]
+}
+
+function mapToCoinGeckoSymbol(id: CryptoId): string {
+    const map: Record<CryptoId, string> = {
+        btc: 'btc',
+        usd: 'usd',
+    }
+    return map[id]
 }
