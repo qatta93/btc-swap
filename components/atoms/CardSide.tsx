@@ -64,7 +64,8 @@ export const CardSide = ({
                 value={topAmount}
                 onChange={handleTopChange}
                 // TODO: change the rate
-                conversionRate={.7}
+                conversionRate={0.7}
+                targetCurrencySymbol={bottomCrypto.symbol}
             />
 
             <div className="flex justify-center -my-2 relative z-10">
@@ -88,6 +89,7 @@ export const CardSide = ({
                 onChange={handleBottomChange}
                 // TODO: change the rate
                 conversionRate={50}
+                targetCurrencySymbol={topCrypto.symbol}
             />
         </div>
     );

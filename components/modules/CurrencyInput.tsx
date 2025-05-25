@@ -10,6 +10,7 @@ interface CurrencyInputProps {
     crypto: CryptoOption;
     label: "Sell" | "Buy";
     conversionRate?: number;
+    targetCurrencySymbol?: string;
 }
 
 export function CurrencyInput({
@@ -18,6 +19,7 @@ export function CurrencyInput({
   crypto,
   label,
   conversionRate,
+  targetCurrencySymbol
 }: CurrencyInputProps) {
     const formattedRate = conversionRate?.toLocaleString(undefined, {
         maximumFractionDigits: 8,
@@ -46,7 +48,7 @@ export function CurrencyInput({
             {conversionRate && (
                 <div className="text-xs text-muted-foreground mt-1 space-y-0.5">
                     <div>
-                        1 {crypto.symbol} = {formattedRate}
+                        1 {crypto.symbol} = {formattedRate} {targetCurrencySymbol}
                     </div>
                 </div>
             )}
