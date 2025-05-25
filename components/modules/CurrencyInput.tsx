@@ -40,18 +40,20 @@ export function CurrencyInput({
                     className="text-lg w-full"
                 />
                 <div className="flex items-center gap-2 ml-3">
-                    <Image src={crypto.svg} alt={crypto.symbol} width={24} height={24} />
+                    <Image src={crypto.svg} alt={crypto.symbol} width={24} height={24}/>
                     <span className="font-semibold">{crypto.symbol}</span>
                 </div>
             </div>
 
-            {conversionRate && (
-                <div className="text-xs text-muted-foreground mt-1 space-y-0.5">
+            <div className="text-xs text-muted-foreground mt-1 space-y-0.5 min-h-[1rem]">
+                {conversionRate !== undefined ? (
                     <div>
                         1 {crypto.symbol} = {formattedRate} {targetCurrencySymbol}
                     </div>
-                </div>
-            )}
+                ) : (
+                    <div className="h-4 w-32 bg-gray-200 rounded animate-pulse"/>
+                )}
+            </div>
         </div>
     );
 }
