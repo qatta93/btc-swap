@@ -1,17 +1,25 @@
 "use client"
 
-import {useState, useEffect, ReactNode} from "react"
-import { Bitcoin, Coins, DollarSign } from "lucide-react"
+import { useState, useEffect, ReactNode } from "react"
+import {
+    TokenBTC,
+    TokenETH,
+    TokenGRT,
+    NetworkBinanceSmartChain,
+    NetworkEthereum,
+    NetworkAvalanche,
+} from "@token-icons/react"
 
 interface FloatingIcon {
     id: number
     Icon: any
-    x: number
-    y: number
+    baseX: number
+    baseY: number
+    xOffset: number
+    yOffset: number
     size: number
     speed: number
     direction: { x: number; y: number }
-    color: string
 }
 
 type BackgroundWrapperProps = {
@@ -22,17 +30,13 @@ export default function BackgroundWrapper({ children }: BackgroundWrapperProps) 
     const [icons, setIcons] = useState<FloatingIcon[]>([])
     const [hoveredIcon, setHoveredIcon] = useState<number | null>(null)
 
-    const cryptoIcons = [Bitcoin, Coins, DollarSign]
-    const colors = [
-        "text-pink-500",
-        "text-indigo-600",
-        "text-violet-600",
-        "text-purple-600",
-        "text-indigo-700",
-        "text-violet-700",
-        "text-pink-700",
-        "text-indigo-800",
-        "text-violet-800",
+    const cryptoIcons = [
+        TokenBTC,
+        TokenETH,
+        TokenGRT,
+        NetworkBinanceSmartChain,
+        NetworkEthereum,
+        NetworkAvalanche,
     ]
 
     useEffect(() => {
@@ -70,20 +74,21 @@ export default function BackgroundWrapper({ children }: BackgroundWrapperProps) 
             return positions
         }
 
-        const positions = generateWellSpacedPositions(8, 200)
+        const positions = generateWellSpacedPositions(cryptoIcons.length, 200)
 
         const initialIcons: FloatingIcon[] = positions.map((pos, i) => ({
             id: i,
-            Icon: cryptoIcons[i % cryptoIcons.length],
-            x: pos.x,
-            y: pos.y,
+            Icon: cryptoIcons[i],
+            baseX: pos.x,
+            baseY: pos.y,
+            xOffset: 0,
+            yOffset: 0,
             size: 100,
-            speed: 0.3,
+            speed: 0.35,
             direction: {
                 x: (Math.random() - 0.5) * 2,
                 y: (Math.random() - 0.5) * 2,
             },
-            color: colors[i % colors.length],
         }))
 
         setIcons(initialIcons)
@@ -92,38 +97,37 @@ export default function BackgroundWrapper({ children }: BackgroundWrapperProps) 
     useEffect(() => {
         if (hoveredIcon !== null) return
 
-        const animateIcons = () => {
-            setIcons((prevIcons) =>
-                prevIcons.map((icon) => {
-                    let newX = icon.x + icon.direction.x * icon.speed
-                    let newY = icon.y + icon.direction.y * icon.speed
-                    const newDirection = { ...icon.direction }
+        const animate = () => {
+            setIcons((prev) =>
+                prev.map((icon) => {
+                    let newX = icon.xOffset + icon.direction.x * icon.speed
+                    let newY = icon.yOffset + icon.direction.y * icon.speed
 
-                    if (newX <= 50 || newX >= window.innerWidth - 100) {
-                        newDirection.x *= -1
-                        newX = Math.max(50, Math.min(window.innerWidth - 100, newX))
+                    if (Math.abs(newX) > 50) {
+                        icon.direction.x *= -1
+                        newX = Math.sign(newX) * 50
                     }
-                    if (newY <= 50 || newY >= window.innerHeight - 100) {
-                        newDirection.y *= -1
-                        newY = Math.max(50, Math.min(window.innerHeight - 100, newY))
+
+                    if (Math.abs(newY) > 50) {
+                        icon.direction.y *= -1
+                        newY = Math.sign(newY) * 50
                     }
 
                     return {
                         ...icon,
-                        x: newX,
-                        y: newY,
-                        direction: newDirection,
+                        xOffset: newX,
+                        yOffset: newY,
                     }
-                }),
+                })
             )
         }
 
-        const interval = setInterval(animateIcons, 50)
+        const interval = setInterval(animate, 50)
         return () => clearInterval(interval)
     }, [hoveredIcon])
 
     return (
-        <div className="fixed inset-0 overflow-hidden min-h-screen flex items-center justify-center bg-background px-4">            {/* Glassmorphism overlay */}
+        <div className="fixed inset-0 overflow-hidden min-h-screen flex items-center justify-center bg-background px-4">
             <div className="absolute inset-0 bg-gradient-to-tr from-indigo-50 to-violet-500 opacity-60" />
             <div className="absolute inset-0 bg-white/5 backdrop-blur-3xl pointer-events-none" />
             {children}
@@ -135,38 +139,31 @@ export default function BackgroundWrapper({ children }: BackgroundWrapperProps) 
                     return (
                         <div
                             key={icon.id}
-                            className={`absolute cursor-pointer transition-all duration-500 ${
+                            className={`absolute transition-all duration-500 ${
                                 isHovered ? "scale-[1.1] z-50" : "scale-100"
                             }`}
                             style={{
-                                left: `${icon.x}px`,
-                                top: `${icon.y}px`,
+                                left: `${icon.baseX + icon.xOffset}px`,
+                                top: `${icon.baseY + icon.yOffset}px`,
                                 width: `${icon.size + 40}px`,
                                 height: `${icon.size + 40}px`,
                             }}
-                            onMouseEnter={() => {
-                                console.log("HOVER START:", icon.id)
-                                setHoveredIcon(icon.id)
-                            }}
-                            onMouseLeave={() => {
-                                console.log("HOVER END:", icon.id)
-                                setHoveredIcon(null)
-                            }}
+                            onMouseEnter={() => setHoveredIcon(icon.id)}
+                            onMouseLeave={() => setHoveredIcon(null)}
                         >
                             <div
                                 className={`w-full h-full flex items-center justify-center rounded-full transition-all duration-500 ${
-                                    isHovered ? "bg-white/20 backdrop-blur-sm border-2 border-white/40" : "bg-transparent"
+                                    isHovered
+                                        ? "bg-white/20 backdrop-blur-sm border-2 border-white/40"
+                                        : "bg-transparent"
                                 }`}
                             >
                                 <Icon
-                                    className={`transition-all duration-500 ${icon.color} ${
-                                        isHovered ? "w-28 h-28 blur-none opacity-100 drop-shadow-2xl" : "w-24 h-24 blur-[10px] !opacity-10"
+                                    className={`transition-all duration-500 ${
+                                        isHovered
+                                            ? "w-28 h-28"
+                                            : "w-24 h-24  opacity-30"
                                     }`}
-                                    style={{
-                                        filter: isHovered
-                                            ? "drop-shadow(0 0 20px currentColor) brightness(1.5)"
-                                            : "drop-shadow(0 2px 4px rgba(0,0,0,0.3))",
-                                    }}
                                 />
                             </div>
                         </div>
