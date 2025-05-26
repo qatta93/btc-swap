@@ -9,6 +9,7 @@ import {
     NetworkEthereum,
     NetworkAvalanche,
 } from "@token-icons/react"
+import {ThemeToggleSwitch} from "@/components/atoms/ThemeToggleSwitch";
 
 interface FloatingIcon {
     id: number
@@ -132,8 +133,11 @@ export default function BackgroundWrapper({ children }: BackgroundWrapperProps) 
             <div className="absolute inset-0 bg-white/5 backdrop-blur-3xl pointer-events-none" />
             {children}
             <div className="absolute inset-0 z-50">
+                <div className="absolute top-4 right-4 z-50">
+                    <ThemeToggleSwitch/>
+                </div>
                 {icons.map((icon) => {
-                    const { Icon } = icon
+                    const {Icon} = icon
                     const isHovered = hoveredIcon === icon.id
 
                     return (
