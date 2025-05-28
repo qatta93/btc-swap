@@ -18,7 +18,7 @@ export const useSwapLogic = () => {
             setSellAmount(value);
             const val = parseFloat(value);
             if (!isNaN(val) && exchangeRate) {
-                const result = val * exchangeRate;
+                const result = val / exchangeRate; 
                 setBuyAmount(result.toFixed(8).replace(/\.?0+$/, ''));
             } else {
                 setBuyAmount("");
@@ -32,7 +32,7 @@ export const useSwapLogic = () => {
             setBuyAmount(value);
             const val = parseFloat(value);
             if (!isNaN(val) && exchangeRate) {
-                const result = val / exchangeRate;
+                const result = val * exchangeRate;
                 setSellAmount(result.toFixed(8).replace(/\.?0+$/, ''));
             } else {
                 setSellAmount("");
