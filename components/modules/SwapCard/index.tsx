@@ -83,7 +83,14 @@ export default function SwapCard() {
           </p>
         )}
       </div>
-      <SwapConfirmationModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onConfirm={handleConfirm} />
+      <SwapConfirmationModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onConfirm={handleConfirm}
+          sellAmount={sellAmount}
+          buyAmount={buyAmount}
+          isReversed={isReversed}
+      />
     </div>
   )
 }
