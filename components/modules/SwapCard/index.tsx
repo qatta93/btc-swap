@@ -6,6 +6,7 @@ import { Button } from '@/components/atoms/Button'
 import { cryptoOptions } from '@/data/cryptoOptions'
 import { useSwapLogic } from '@/hooks/useSwapLogic'
 import { useSwapCard } from './useSwapCard'
+import SwapConfirmationModal from "@/components/modules/ConfirmationModal";
 
 export default function SwapCard() {
   const {
@@ -17,6 +18,9 @@ export default function SwapCard() {
     toggleSwapDirection,
     rate,
     error,
+    isModalOpen,
+    setIsModalOpen,
+    handleConfirm
   } = useSwapLogic()
 
   const { isFlipped, isFlipping, iconRotation, handleSwap } =
@@ -70,7 +74,7 @@ export default function SwapCard() {
         </motion.div>
       </div>
       <div className="p-5 pt-0">
-        <Button className="w-full py-6 text-lg font-medium bg-pink-500 hover:bg-pink-600 text-white rounded-xl">
+        <Button className="w-full py-6 text-lg font-medium bg-pink-500 hover:bg-pink-600 text-white rounded-xl" onClick={() => setIsModalOpen(true)}>
           Get started
         </Button>
         {error && (
@@ -79,6 +83,7 @@ export default function SwapCard() {
           </p>
         )}
       </div>
+      <SwapConfirmationModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onConfirm={handleConfirm} />
     </div>
   )
 }
