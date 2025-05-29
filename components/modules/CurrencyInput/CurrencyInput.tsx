@@ -4,6 +4,7 @@ import Image from "next/image";
 import type { CryptoOption } from "@/types/crypto";
 import Input from "@/components/atoms/Input";
 import { formatDisplayValue, parseInputValue } from "./utils";
+import { cn } from "@/lib/utils"; // Zakładam, że masz utila `cn`
 
 interface CurrencyInputProps {
   value: string;
@@ -39,7 +40,11 @@ export function CurrencyInput({
       <span className="text-sm text-muted-foreground font-medium mb-1">
         {label}
       </span>
-      <div className="flex items-center justify-between border border-border bg-background px-4 py-3 rounded-xl">
+      <div
+        className={cn(
+          "flex items-center justify-between bg-background px-4 py-3 rounded-xl border",
+          showValidationError ? "border-red-500" : "border-border"
+        )}>
         <Input
           type="text"
           inputMode="decimal"

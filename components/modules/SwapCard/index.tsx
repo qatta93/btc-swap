@@ -1,6 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
+import { Loader2 } from "lucide-react";
+
 import CardSide from "@/components/atoms/CardSide";
 import { Button } from "@/components/atoms/Button";
 import { cryptoOptions } from "@/data/cryptoOptions";
@@ -10,6 +13,8 @@ import SwapConfirmationModal from "@/components/modules/ConfirmationModal";
 import SwapSuccessModal from "@/components/modules/SuccessModal";
 
 export default function SwapCard() {
+  const [isLoading, setIsLoading] = useState(false);
+
   const {
     sellAmount,
     buyAmount,
@@ -38,6 +43,14 @@ export default function SwapCard() {
   const numericSellAmount = parseFloat(sellAmount);
   const isValidTrade = !isNaN(numericSellAmount) && numericSellAmount > 0;
 
+  const handleButtonClick = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      setIsModalOpen(true);
+    }, 1000);
+  };
+
   return (
     <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
       <div className="relative perspective-1000">
@@ -50,46 +63,56 @@ export default function SwapCard() {
             isFront={true}
             sellAmount={sellAmount}
             buyAmount={buyAmount}
-            sellCrypto={sellCrypto} // USD
-            buyCrypto={buyCrypto} // BTC
+            sellCrypto={sellCrypto}
+            buyCrypto={buyCrypto}
             handleSwap={handleSwap}
             isFlipping={isFlipping}
             iconRotation={iconRotation}
             setSellAmount={handleSellChange}
             setBuyAmount={handleBuyChange}
-            rateBaseToQuote={rateUsdToBtc} // USD/BTC
-            rateQuoteToBase={rateBtcToUsd} // BTC/USD
+            rateBaseToQuote={rateUsdToBtc}
+            rateQuoteToBase={rateBtcToUsd}
           />
           <div className="absolute w-full h-full rotateX-180 backface-hidden">
             <CardSide
               isFront={false}
               sellAmount={sellAmount}
               buyAmount={buyAmount}
-              sellCrypto={sellCrypto} // USD
-              buyCrypto={buyCrypto} // BTC
+              sellCrypto={sellCrypto}
+              buyCrypto={buyCrypto}
               handleSwap={handleSwap}
               isFlipping={isFlipping}
               iconRotation={iconRotation}
               setSellAmount={handleSellChange}
               setBuyAmount={handleBuyChange}
-              rateBaseToQuote={rateUsdToBtc} // USD/BTC
-              rateQuoteToBase={rateBtcToUsd} // BTC/USD
+              rateBaseToQuote={rateUsdToBtc}
+              rateQuoteToBase={rateBtcToUsd}
             />
           </div>
         </motion.div>
       </div>
+
       <div className="p-5 pt-0">
         <Button
-          onClick={() => setIsModalOpen(true)}
-          disabled={!isValidTrade}>
-          Get started
+          onClick={handleButtonClick}
+          disabled={!isValidTrade || isLoading}>
+          {isLoading ? (
+            <span className="flex items-center gap-2 justify-center">
+              <Loader2 className="w-6 h-6 animate-spin" />
+              Loading...
+            </span>
+          ) : (
+            "Get started"
+          )}
         </Button>
+
         {error && (
           <p className="text-xs text-red-500 text-center mt-2">
             Error fetching rate: {error}
           </p>
         )}
       </div>
+
       <SwapConfirmationModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -98,6 +121,7 @@ export default function SwapCard() {
         buyAmount={buyAmount}
         isReversed={isReversed}
       />
+
       <SwapSuccessModal
         isOpen={isSuccessConfirmationModalOpen}
         onClose={() => setIsSuccessConfirmationModalOpen(false)}
