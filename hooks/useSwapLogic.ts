@@ -7,7 +7,8 @@ export const useSwapLogic = () => {
     const [sellAmount, setSellAmount] = useState("");
     const [buyAmount, setBuyAmount] = useState("");
     const [isReversed, setIsReversed] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isSuccessConfirmationModalOpen, setIsSuccessConfirmationModalOpen] = useState(false);
 
     const fromId = isReversed ? "usd" : "btc";
     const toId = isReversed ? "btc" : "usd";
@@ -48,26 +49,23 @@ export const useSwapLogic = () => {
         setBuyAmount(sellAmount);
     }, [sellAmount, buyAmount]);
 
-    const confirmSwap = () => {
-        console.log("Swapping", sellAmount, isReversed ? "USD → BTC" : "BTC → USD");
-    };
-
     const handleConfirm = () => {
-        confirmSwap()
+        setIsSuccessConfirmationModalOpen(true);
     }
 
     return {
-        sellAmount,
-        buyAmount,
-        isReversed,
-        handleSellChange,
-        handleBuyChange,
-        toggleSwapDirection,
-        confirmSwap,
-        rate,
-        error,
-        handleConfirm,
-        isModalOpen,
-        setIsModalOpen,
+      sellAmount,
+      buyAmount,
+      isReversed,
+      handleSellChange,
+      handleBuyChange,
+      toggleSwapDirection,
+      rate,
+      error,
+      handleConfirm,
+      isModalOpen,
+      setIsModalOpen,
+      isSuccessConfirmationModalOpen,
+      setIsSuccessConfirmationModalOpen,
     };
 };

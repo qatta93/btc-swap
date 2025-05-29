@@ -1,12 +1,13 @@
-'use client'
+"use client";
 
-import { motion } from 'framer-motion'
-import CardSide from '@/components/atoms/CardSide'
-import { Button } from '@/components/atoms/Button'
-import { cryptoOptions } from '@/data/cryptoOptions'
-import { useSwapLogic } from '@/hooks/useSwapLogic'
-import { useSwapCard } from './useSwapCard'
+import { motion } from "framer-motion";
+import CardSide from "@/components/atoms/CardSide";
+import { Button } from "@/components/atoms/Button";
+import { cryptoOptions } from "@/data/cryptoOptions";
+import { useSwapLogic } from "@/hooks/useSwapLogic";
+import { useSwapCard } from "./useSwapCard";
 import SwapConfirmationModal from "@/components/modules/ConfirmationModal";
+import SwapSuccessModal from "@/components/modules/SuccessModal";
 
 export default function SwapCard() {
   const {
@@ -20,17 +21,19 @@ export default function SwapCard() {
     error,
     isModalOpen,
     setIsModalOpen,
-    handleConfirm
-  } = useSwapLogic()
+    handleConfirm,
+    isSuccessConfirmationModalOpen,
+    setIsSuccessConfirmationModalOpen,
+  } = useSwapLogic();
 
   const { isFlipped, isFlipping, iconRotation, handleSwap } =
-    useSwapCard(toggleSwapDirection)
+    useSwapCard(toggleSwapDirection);
 
-  const sellCrypto = cryptoOptions[1]
-  const buyCrypto = cryptoOptions[0]
+  const sellCrypto = cryptoOptions[1];
+  const buyCrypto = cryptoOptions[0];
 
-  const rateUsdToBtc = isReversed ? rate ?? 0 : rate ? 1 / rate : 0
-  const rateBtcToUsd = isReversed ? (rate ? 1 / rate : 0) : rate ?? 0
+  const rateUsdToBtc = isReversed ? rate ?? 0 : rate ? 1 / rate : 0;
+  const rateBtcToUsd = isReversed ? (rate ? 1 / rate : 0) : rate ?? 0;
 
   return (
     <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
@@ -38,9 +41,8 @@ export default function SwapCard() {
         <motion.div
           className="relative preserve-3d"
           animate={{ rotateX: isFlipped ? 180 : 0 }}
-          transition={{ duration: 0.6, ease: 'easeInOut' }}
-          style={{ height: '280px' }}
-        >
+          transition={{ duration: 0.6, ease: "easeInOut" }}
+          style={{ height: "280px" }}>
           <CardSide
             isFront={true}
             sellAmount={sellAmount}
@@ -74,7 +76,9 @@ export default function SwapCard() {
         </motion.div>
       </div>
       <div className="p-5 pt-0">
-        <Button className="w-full py-6 text-lg font-medium bg-pink-500 hover:bg-pink-600 text-white rounded-xl" onClick={() => setIsModalOpen(true)}>
+        <Button
+          className="w-full py-6 text-lg font-medium bg-pink-500 hover:bg-pink-600 text-white rounded-xl"
+          onClick={() => setIsModalOpen(true)}>
           Get started
         </Button>
         {error && (
@@ -84,13 +88,20 @@ export default function SwapCard() {
         )}
       </div>
       <SwapConfirmationModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          onConfirm={handleConfirm}
-          sellAmount={sellAmount}
-          buyAmount={buyAmount}
-          isReversed={isReversed}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleConfirm}
+        sellAmount={sellAmount}
+        buyAmount={buyAmount}
+        isReversed={isReversed}
+      />
+      <SwapSuccessModal
+        isOpen={isSuccessConfirmationModalOpen}
+        onClose={() => setIsSuccessConfirmationModalOpen(false)}
+        sellAmount={sellAmount}
+        buyAmount={buyAmount}
+        isReversed={isReversed}
       />
     </div>
-  )
+  );
 }
