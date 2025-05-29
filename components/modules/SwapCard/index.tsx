@@ -35,6 +35,9 @@ export default function SwapCard() {
   const rateUsdToBtc = isReversed ? rate ?? 0 : rate ? 1 / rate : 0;
   const rateBtcToUsd = isReversed ? (rate ? 1 / rate : 0) : rate ?? 0;
 
+  const numericSellAmount = parseFloat(sellAmount);
+  const isValidTrade = !isNaN(numericSellAmount) && numericSellAmount > 0;
+
   return (
     <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
       <div className="relative perspective-1000">
@@ -77,8 +80,8 @@ export default function SwapCard() {
       </div>
       <div className="p-5 pt-0">
         <Button
-          className="w-full py-6 text-lg font-medium bg-pink-500 hover:bg-pink-600 text-white rounded-xl"
-          onClick={() => setIsModalOpen(true)}>
+          onClick={() => setIsModalOpen(true)}
+          disabled={!isValidTrade}>
           Get started
         </Button>
         {error && (
