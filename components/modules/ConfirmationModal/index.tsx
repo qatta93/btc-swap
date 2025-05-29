@@ -69,22 +69,22 @@ export default function SwapConfirmationModal({
   if (!isOpen && !isAnimating) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 ">
       <div
         ref={modalRef}
-        className={`w-[448px] min-h-[376px] max-w-full bg-white rounded-xl overflow-hidden shadow-xl transform transition-all duration-200 ease-in-out mt-[25px] ${
+        className={`w-[448px] min-h-[376px] max-w-full bg-white dark:bg-[#4b4370] dark:text-white rounded-xl overflow-hidden shadow-xl transform transition-all duration-200 ease-in-out mt-[25px] ${
           isOpen
             ? "opacity-100 translate-y-0 scale-100"
             : "opacity-0 translate-y-1 scale-98"
         }`}>
         <div className="p-6 pb-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-medium text-gray-900">
+            <h2 className="text-lg font-medium text-gray-900 dark:text-white">
               You're swapping
             </h2>
             <button
               onClick={onClose}
-              className="h-6 w-6 p-0 flex items-center justify-center rounded-full hover:bg-gray-100">
+              className="h-6 w-6 p-0 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
               <X className="h-4 w-4" />
             </button>
           </div>
@@ -104,14 +104,14 @@ export default function SwapConfirmationModal({
           </div>
 
           <div className="flex justify-center mb-4">
-            <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
-              <ArrowDown className="h-4 w-4 text-gray-600" />
+            <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center dark:bg-[#4b4370]">
+              <ArrowDown className="h-4 w-4 text-gray-600 dark:text-white" />
             </div>
           </div>
 
           <div className="flex items-center justify-between mb-6">
             <div>
-              <div className="text-2xl text-gray-900">
+              <div className="text-2xl text-gray-900 dark:text-white">
                 {buyAmount}
                 <span className="ml-2 font-semibold">{toSymbol}</span>
               </div>
@@ -123,7 +123,7 @@ export default function SwapConfirmationModal({
 
           <button
             onClick={() => setShowMore(!showMore)}
-            className="flex items-center justify-center w-full text-sm text-gray-600 hover:text-gray-800 mb-4">
+            className="flex items-center justify-center w-full text-sm text-gray-600 dark:text-white hover:text-gray-800 mb-4">
             Show more
             <ChevronDown
               className={`ml-1 h-4 w-4 transition-transform ${
@@ -133,28 +133,36 @@ export default function SwapConfirmationModal({
           </button>
 
           {showMore && (
-            <div className="space-y-3 mb-6 p-4 bg-gray-50 rounded-lg">
+            <div className="space-y-3 mb-6 p-4 bg-gray-50 dark:bg-[#4b4370] rounded-lg">
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <span className="text-sm text-gray-600">Fee (0.25%)</span>
+                  <span className="text-sm text-gray-600 dark:text-white">
+                    Fee (0.25%)
+                  </span>
                   <Info
-                    className="ml-1 h-3 w-3 text-gray-400 cursor-pointer"
+                    className="ml-1 h-3 w-3 text-gray-400 dark:text-white cursor-pointer"
                     data-tooltip-id="tooltip"
                     data-tooltip-content="Platform fee charged by the exchange for facilitating the swap between cryptocurrencies"
                   />
                 </div>
-                <span className="text-sm text-gray-900">{transactionFee}</span>
+                <span className="text-sm text-gray-900 dark:text-white">
+                  {transactionFee}
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <span className="text-sm text-gray-600">Network cost</span>
+                  <span className="text-sm text-gray-600 dark:text-white">
+                    Network cost
+                  </span>
                   <Info
-                    className="ml-1 h-3 w-3 text-gray-400 cursor-pointer"
+                    className="ml-1 h-3 w-3 text-gray-400 dark:text-white cursor-pointer"
                     data-tooltip-id="tooltip"
                     data-tooltip-content="Blockchain transaction fee (gas fee) required to execute the swap on the network"
                   />
                 </div>
-                <span className="text-sm text-gray-900">$1.03</span>
+                <span className="text-sm text-gray-900 dark:text-white">
+                  $1.03
+                </span>
               </div>
             </div>
           )}

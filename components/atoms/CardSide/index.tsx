@@ -52,7 +52,6 @@ export const CardSide = ({
     ? rateQuoteToBase
     : rateBaseToQuote;
 
-
   return (
     <div className="absolute w-full h-full p-5 backface-hidden">
       <CurrencyInput
@@ -67,7 +66,7 @@ export const CardSide = ({
       <div className="flex justify-center -my-2 relative z-10">
         <motion.button
           onClick={handleSwap}
-          className="bg-white border border-gray-200 rounded-full p-2 shadow-sm"
+          className="bg-white border border-gray-200 rounded-full p-2 shadow-sm dark:bg-[#4b4370]"
           whileTap={{ scale: 0.9 }}
           whileHover={{ y: -2, boxShadow: "0 4px 6px rgba(0,0,0,0.1)" }}
           disabled={isFlipping}>
