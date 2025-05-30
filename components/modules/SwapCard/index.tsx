@@ -52,7 +52,7 @@ export default function SwapCard() {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg overflow-hidden dark:bg-[#4b4370]">
+    <div className="bg-white rounded-2xl shadow-lg overflow-hidden dark:bg-dark">
       <div className="relative perspective-1000">
         <motion.div
           className="relative preserve-3d"
@@ -107,7 +107,7 @@ export default function SwapCard() {
         </Button>
 
         {error && (
-          <p className="text-xs text-red-500 text-center mt-2">
+          <p className="text-xs text-error-500 dark:text-error-400 text-center mt-2">
             Error fetching rate: {error}
           </p>
         )}

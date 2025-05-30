@@ -43,7 +43,9 @@ export function CurrencyInput({
       <div
         className={cn(
           "flex items-center justify-between bg-background px-4 py-3 rounded-xl border",
-          showValidationError ? "border-red-500" : "border-border"
+          showValidationError
+            ? "border-error-500 dark:border-error-400"
+            : "border-border"
         )}>
         <Input
           type="text"
@@ -70,7 +72,7 @@ export function CurrencyInput({
       </div>
 
       {showValidationError && (
-        <div className="text-xs text-red-500 mt-1">
+        <div className="text-xs text-error-500 dark:text-error-400 mt-1">
           Please enter a value greater than 0
         </div>
       )}

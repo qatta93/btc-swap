@@ -72,7 +72,7 @@ export default function SwapConfirmationModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 ">
       <div
         ref={modalRef}
-        className={`w-[448px] min-h-[376px] max-w-full bg-white dark:bg-[#4b4370] dark:text-white rounded-xl overflow-hidden shadow-xl transform transition-all duration-200 ease-in-out mt-[25px] ${
+        className={`w-[448px] min-h-[376px] max-w-full bg-white dark:bg-dark dark:text-white rounded-xl overflow-hidden shadow-xl transform transition-all duration-200 ease-in-out mt-[25px] ${
           isOpen
             ? "opacity-100 translate-y-0 scale-100"
             : "opacity-0 translate-y-1 scale-98"
@@ -104,7 +104,7 @@ export default function SwapConfirmationModal({
           </div>
 
           <div className="flex justify-center mb-4">
-            <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center dark:bg-[#4b4370]">
+            <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center dark:bg-dark">
               <ArrowDown className="h-4 w-4 text-gray-600 dark:text-white" />
             </div>
           </div>
@@ -133,7 +133,7 @@ export default function SwapConfirmationModal({
           </button>
 
           {showMore && (
-            <div className="space-y-3 mb-6 p-4 bg-gray-50 dark:bg-[#4b4370] rounded-lg">
+            <div className="space-y-3 mb-6 p-4 bg-gray-50 dark:bg-dark rounded-lg">
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <span className="text-sm text-gray-600 dark:text-white">
@@ -169,7 +169,7 @@ export default function SwapConfirmationModal({
 
           <button
             onClick={onConfirm}
-            className="w-full py-6 text-lg font-medium bg-pink-500 hover:bg-pink-600 text-white rounded-xl">
+            className="w-full py-6 text-lg font-medium bg-primary-500 hover:bg-primary-600 text-white rounded-xl">
             Swap
           </button>
         </div>

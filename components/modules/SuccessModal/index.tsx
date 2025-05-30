@@ -111,7 +111,7 @@ export default function SwapSuccessModal({
 
       <div
         ref={modalRef}
-        className={`w-[448px] bg-white dark:bg-[#4b4370] rounded-xl overflow-hidden shadow-xl transform transition-all duration-300 ease-in-out ${
+        className={`w-[448px] bg-white dark:bg-dark rounded-xl overflow-hidden shadow-xl transform transition-all duration-300 ease-in-out ${
           isOpen
             ? "opacity-100 translate-y-0 scale-100"
             : "opacity-0 translate-y-4 scale-95"
