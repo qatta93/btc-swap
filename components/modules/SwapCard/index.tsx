@@ -4,13 +4,15 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 
-import CardSide from "@/components/atoms/CardSide";
+import CardSide from "@/components/modules/CardSide";
 import { Button } from "@/components/atoms/Button";
 import { cryptoOptions } from "@/data/cryptoOptions";
 import { useSwapLogic } from "@/hooks/useSwapLogic";
-import { useSwapCard } from "./useSwapCard";
+import { useSwapCardAnimation } from "./useSwapCardAnimation";
 import SwapConfirmationModal from "@/components/modules/ConfirmationModal";
 import SwapSuccessModal from "@/components/modules/SuccessModal";
+import { SWAP_ANIMATION_DURATION } from "./config";
+
 
 export default function SwapCard() {
   const [isLoading, setIsLoading] = useState(false);
@@ -31,8 +33,8 @@ export default function SwapCard() {
     setIsSuccessConfirmationModalOpen,
   } = useSwapLogic();
 
-  const { isFlipped, isFlipping, iconRotation, handleSwap } =
-    useSwapCard(toggleSwapDirection);
+  const { isFlipped, isFlipping, iconRotation, handleSwapAnimation } =
+    useSwapCardAnimation(toggleSwapDirection);
 
   const sellCrypto = cryptoOptions[1];
   const buyCrypto = cryptoOptions[0];
@@ -63,30 +65,30 @@ export default function SwapCard() {
             isFront={true}
             sellAmount={sellAmount}
             buyAmount={buyAmount}
-            sellCrypto={sellCrypto}
-            buyCrypto={buyCrypto}
-            handleSwap={handleSwap}
+            sellCryptoOption={cryptoOptions[1]}
+            buyCryptoOption={cryptoOptions[0]}
+            handleSwap={handleSwapAnimation}
             isFlipping={isFlipping}
             iconRotation={iconRotation}
             setSellAmount={handleSellChange}
             setBuyAmount={handleBuyChange}
-            rateBaseToQuote={rateUsdToBtc}
-            rateQuoteToBase={rateBtcToUsd}
+            rateSell={rateUsdToBtc}
+            rateBuy={rateBtcToUsd}
           />
           <div className="absolute w-full h-full rotateX-180 backface-hidden">
             <CardSide
               isFront={false}
               sellAmount={sellAmount}
               buyAmount={buyAmount}
-              sellCrypto={sellCrypto}
-              buyCrypto={buyCrypto}
-              handleSwap={handleSwap}
+              sellCryptoOption={cryptoOptions[0]}
+              buyCryptoOption={cryptoOptions[1]}
+              handleSwap={handleSwapAnimation}
               isFlipping={isFlipping}
               iconRotation={iconRotation}
-              setSellAmount={handleSellChange}
-              setBuyAmount={handleBuyChange}
-              rateBaseToQuote={rateUsdToBtc}
-              rateQuoteToBase={rateBtcToUsd}
+              setSellAmount={handleBuyChange}
+              setBuyAmount={handleSellChange}
+              rateSell={rateBtcToUsd}
+              rateBuy={rateUsdToBtc}
             />
           </div>
         </motion.div>

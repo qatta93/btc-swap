@@ -2,6 +2,8 @@
 
 import { useCallback, useState } from "react";
 import { useExchangeRate } from "@/hooks/useExchangeRate";
+import { delay } from "framer-motion";
+import { SWAP_ANIMATION_DURATION } from "@/components/modules/SwapCard/config";
 
 export const useSwapLogic = () => {
     const [sellAmount, setSellAmount] = useState("");
@@ -16,37 +18,43 @@ export const useSwapLogic = () => {
     const exchangeRate = rate as number;
 
     const handleSellChange = useCallback(
-        (value: string) => {
-            setSellAmount(value);
-            const val = parseFloat(value);
-            if (!isNaN(val) && exchangeRate) {
-                const result = val / exchangeRate; 
-                setBuyAmount(result.toFixed(8).replace(/\.?0+$/, ''));
-            } else {
-                setBuyAmount("");
-            }
-        },
-        [exchangeRate]
+      (value: string) => {
+        setSellAmount(value);
+        const val = parseFloat(value);
+        if (!isNaN(val) && exchangeRate) {
+          const result = val / exchangeRate;
+          const roundedTo = result > 1 ? 3 : 6;
+
+          setBuyAmount(result.toFixed(roundedTo).replace(/\.?0+$/, ""));
+        } else {
+          setBuyAmount("");
+        }
+      },
+      [exchangeRate]
     );
 
     const handleBuyChange = useCallback(
-        (value: string) => {
-            setBuyAmount(value);
-            const val = parseFloat(value);
-            if (!isNaN(val) && exchangeRate) {
-                const result = val * exchangeRate;
-                setSellAmount(result.toFixed(8).replace(/\.?0+$/, ''));
-            } else {
-                setSellAmount("");
-            }
-        },
-        [exchangeRate]
+      (value: string) => {
+        setBuyAmount(value);
+        const val = parseFloat(value);
+        if (!isNaN(val) && exchangeRate) {
+          const result = val * exchangeRate;
+          const roundedTo = result > 1 ? 3 : 6;
+
+          setSellAmount(result.toFixed(roundedTo).replace(/\.?0+$/, ""));
+        } else {
+          setSellAmount("");
+        }
+      },
+      [exchangeRate]
     );
 
     const toggleSwapDirection = useCallback(() => {
-        setIsReversed((prev) => !prev);
+      setIsReversed((prev) => !prev);
+      const cancel = delay(() => {
         setSellAmount(buyAmount);
         setBuyAmount(sellAmount);
+      }, SWAP_ANIMATION_DURATION * 1000 - 300);
     }, [sellAmount, buyAmount]);
 
     const handleConfirm = () => {

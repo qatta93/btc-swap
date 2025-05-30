@@ -1,0 +1,1 @@
+export const SWAP_ANIMATION_DURATION = 0.6;

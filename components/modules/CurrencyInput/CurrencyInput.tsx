@@ -5,6 +5,7 @@ import type { CryptoOption } from "@/types/crypto";
 import Input from "@/components/atoms/Input";
 import { formatDisplayValue, parseInputValue } from "./utils";
 import { cn } from "@/lib/utils"; // Zakładam, że masz utila `cn`
+import { AnimatePresence, motion } from "framer-motion";
 
 interface CurrencyInputProps {
   value: string;
@@ -13,6 +14,7 @@ interface CurrencyInputProps {
   label: "Sell" | "Buy";
   conversionRate?: number;
   targetCurrencySymbol?: string;
+  isFlipping: boolean;
 }
 
 export function CurrencyInput({
@@ -22,10 +24,16 @@ export function CurrencyInput({
   label,
   conversionRate,
   targetCurrencySymbol,
+  isFlipping,
 }: CurrencyInputProps) {
-  const formattedRate = conversionRate?.toLocaleString(undefined, {
-    maximumFractionDigits: 8,
-  });
+  const formattedRate =
+    conversionRate && conversionRate > 1
+      ? conversionRate?.toLocaleString(undefined, {
+          maximumFractionDigits: 2,
+        })
+      : conversionRate?.toLocaleString(undefined, {
+          maximumFractionDigits: 8,
+        });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(parseInputValue(e.target.value));
@@ -61,15 +69,26 @@ export function CurrencyInput({
         </div>
       </div>
 
-      <div className="text-xs mob:text- text-muted-foreground mt-1 space-y-0.5 min-h-[1rem]">
-        {conversionRate !== undefined ? (
-          <div>
-            1 {crypto.symbol} = {formattedRate} {targetCurrencySymbol}
-          </div>
+      <AnimatePresence>
+        {!isFlipping ? (
+          <motion.div
+            exit={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: isFlipping ? 0 : 1, y: isFlipping ? -10 : 0 }}
+            transition={{ duration: 0.3 }}
+            className="text-xs text-muted-foreground mt-1 space-y-0.5 min-h-[1rem]">
+            {conversionRate !== 0 ? (
+              <div>
+                1 {crypto.symbol} = {formattedRate} {targetCurrencySymbol}
+              </div>
+            ) : (
+              <div className="h-4 w-32 bg-gray-200 rounded animate-pulse" />
+            )}
+          </motion.div>
         ) : (
-          <div className="h-4 w-32 bg-gray-200 rounded animate-pulse" />
+          <div className="min-h-[1rem]"></div>
         )}
-      </div>
+      </AnimatePresence>
 
       {showValidationError && (
         <div className="text-xs text-error-500 dark:text-error-400 mt-1">

@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 interface UseCardSideProps {
     isFront: boolean;
     setSellAmount: (value: string) => void;

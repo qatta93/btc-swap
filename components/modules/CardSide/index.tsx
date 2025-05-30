@@ -11,10 +11,10 @@ interface CardSideProps {
   isFront: boolean;
   sellAmount: string;
   buyAmount: string;
-  rateBaseToQuote: number;
-  rateQuoteToBase: number;
-  sellCrypto: CryptoOption;
-  buyCrypto: CryptoOption;
+  rateSell: number;
+  rateBuy: number;
+  sellCryptoOption: CryptoOption;
+  buyCryptoOption: CryptoOption;
   isFlipping: boolean;
   iconRotation: number;
   setSellAmount: (val: string) => void;
@@ -26,41 +26,32 @@ export const CardSide = ({
   isFront,
   sellAmount,
   buyAmount,
-  sellCrypto,
-  buyCrypto,
-  rateBaseToQuote,
-  rateQuoteToBase,
+  sellCryptoOption,
+  buyCryptoOption,
+  rateSell,
+  rateBuy,
   isFlipping,
   iconRotation,
   setSellAmount,
   setBuyAmount,
   handleSwap,
 }: CardSideProps) => {
-  const topAmount = isFront ? sellAmount : buyAmount;
-  const bottomAmount = isFront ? buyAmount : sellAmount;
-  const topCrypto = isFront ? sellCrypto : buyCrypto;
-  const bottomCrypto = isFront ? buyCrypto : sellCrypto;
-
   const { handleTopChange, handleBottomChange } = useCardSide({
     isFront,
     setSellAmount,
     setBuyAmount,
   });
 
-  const actualTopConversionRate = isFront ? rateBaseToQuote : rateQuoteToBase;
-  const actualBottomConversionRate = isFront
-    ? rateQuoteToBase
-    : rateBaseToQuote;
-
   return (
     <div className="absolute w-full h-full p-5 backface-hidden">
       <CurrencyInput
-        crypto={topCrypto}
+        crypto={sellCryptoOption} // e.g., USD if isFront, BTC if !isFront
         label="Sell"
-        value={topAmount}
+        value={sellAmount}
         onChange={handleTopChange}
-        conversionRate={actualTopConversionRate}
-        targetCurrencySymbol={bottomCrypto.symbol}
+        conversionRate={rateSell}
+        targetCurrencySymbol={buyCryptoOption.symbol}
+        isFlipping={isFlipping}
       />
 
       <div className="flex justify-center -my-2 relative z-10 mob:my-[4px]">
@@ -79,12 +70,13 @@ export const CardSide = ({
       </div>
 
       <CurrencyInput
-        crypto={bottomCrypto}
+        crypto={buyCryptoOption} // e.g., BTC if isFront, USD if !isFront
         label="Buy"
-        value={bottomAmount}
+        value={buyAmount}
         onChange={handleBottomChange}
-        conversionRate={actualBottomConversionRate}
-        targetCurrencySymbol={topCrypto.symbol}
+        conversionRate={rateBuy}
+        targetCurrencySymbol={sellCryptoOption.symbol}
+        isFlipping={isFlipping}
       />
     </div>
   );
