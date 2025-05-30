@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { X, Check, ArrowUpRight } from "lucide-react";
 import confetti from "canvas-confetti";
 import { useConfirmationModal } from "@/components/modules/ConfirmationModal/useConfirmationModal";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowDown } from "lucide-react";
 
 interface SwapSuccessModalProps {
   isOpen: boolean;
@@ -119,12 +119,12 @@ export default function SwapSuccessModal({
         <div className="p-6 pb-4 flex justify-end">
           <button
             onClick={onClose}
-            className="h-6 w-6 p-0 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
-            <X className="h-4 w-4" />
+            className="h-10 w-10 p-0 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+            <X className="h-8 w-8" />
           </button>
         </div>
 
-        <div className="px-6 pb-6">
+        <div className="px-6 pb-6 mob:pb-2">
           <div className="flex justify-center mb-6">
             <div className="w-16 h-16 bg-green-100 dark:bg-green-500 rounded-full flex items-center justify-center">
               <Check className="h-8 w-8 text-green-500 dark:text-white" />
@@ -140,43 +140,36 @@ export default function SwapSuccessModal({
             </p>
           </div>
 
-          <div className="bg-gray-50 dark:bg-[#4b4370] rounded-lg p-4 mb-6">
-            <div className="flex items-center justify-between mb-4">
+          <div className="bg-gray-50 dark:bg-dark p-4 mb-6 mob:mb-0">
+            <div className="flex flex-row mob:flex-col items-center justify-between gap-4 mb-4">
               <div className="flex items-center">
-                <img
-                  src={fromIcon || "/placeholder.svg"}
-                  alt={fromSymbol}
-                  className="w-8 h-8 mr-2"
-                />
+                <img src={fromIcon} alt={fromSymbol} className="w-8 h-8 mr-2" />
                 <span className="text-gray-900 dark:text-white font-medium">
                   {sellAmount} {fromSymbol}
                 </span>
               </div>
-              <ArrowRight className="h-5 w-5 text-gray-400 " />
+              <ArrowDown className="hidden mob:block h-5 w-5 text-gray-400" />
+              <ArrowRight className="block mob:hidden h-5 w-5 text-gray-400" />
               <div className="flex items-center">
-                <img
-                  src={toIcon || "/placeholder.svg"}
-                  alt={toSymbol}
-                  className="w-8 h-8 mr-2"
-                />
+                <img src={toIcon} alt={toSymbol} className="w-8 h-8 mr-2" />
                 <span className="text-gray-900 dark:text-white font-medium">
                   {buyAmount} {toSymbol}
                 </span>
               </div>
             </div>
           </div>
+        </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <button
-              onClick={onClose}
-              className="py-3 px-4 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium rounded-xl transition-colors">
-              Close
-            </button>
-            <button className="py-3 px-4 bg-pink-500 hover:bg-pink-600 text-white font-medium rounded-xl transition-colors flex items-center justify-center">
-              View Details
-              <ArrowUpRight className="ml-1 h-4 w-4" />
-            </button>
-          </div>
+        <div className="grid grid-cols-2 gap-4 px-6 pt-0 pb-8">
+          <button
+            onClick={onClose}
+            className="py-3 px-4 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium rounded-xl transition-colors">
+            Close
+          </button>
+          <button className="py-3 px-4 bg-pink-500 hover:bg-pink-600 text-white font-medium rounded-xl transition-colors flex items-center justify-center">
+            View Details
+            <ArrowUpRight className="ml-1 h-4 w-4" />
+          </button>
         </div>
       </div>
     </div>

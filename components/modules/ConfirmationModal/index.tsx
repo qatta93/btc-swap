@@ -5,6 +5,7 @@ import { X, ChevronDown, ArrowDown, Info } from "lucide-react";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import { useConfirmationModal } from "@/components/modules/ConfirmationModal/useConfirmationModal";
+import { Button } from "@/components/atoms/Button";
 
 interface SwapConfirmationModalProps {
   isOpen: boolean;
@@ -84,8 +85,8 @@ export default function SwapConfirmationModal({
             </h2>
             <button
               onClick={onClose}
-              className="h-6 w-6 p-0 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
-              <X className="h-4 w-4" />
+              className="h-10 w-10 p-0 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+              <X className="h-8 w-8" />
             </button>
           </div>
         </div>
@@ -167,11 +168,7 @@ export default function SwapConfirmationModal({
             </div>
           )}
 
-          <button
-            onClick={onConfirm}
-            className="w-full py-6 text-lg font-medium bg-primary-500 hover:bg-primary-600 text-white rounded-xl">
-            Swap
-          </button>
+          <Button onClick={onConfirm}>Swap</Button>
         </div>
       </div>
 

@@ -52,7 +52,7 @@ export default function SwapCard() {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg overflow-hidden dark:bg-dark">
+    <div className="bg-white rounded-2xl shadow-lg overflow-hidden dark:bg-dark mob:min-h-[380px] flex flex-col justify-between">
       <div className="relative perspective-1000">
         <motion.div
           className="relative preserve-3d"

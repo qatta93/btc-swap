@@ -63,7 +63,7 @@ export const CardSide = ({
         targetCurrencySymbol={bottomCrypto.symbol}
       />
 
-      <div className="flex justify-center -my-2 relative z-10">
+      <div className="flex justify-center -my-2 relative z-10 mob:my-[4px]">
         <motion.button
           onClick={handleSwap}
           className="bg-white border border-gray-200 rounded-full p-2 shadow-sm dark:bg-dark"

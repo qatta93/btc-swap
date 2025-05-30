@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <BackgroundWrapper>
       <div className="relative w-full max-w-md z-[100]">
-        <h1 className="text-4xl font-black text-center mb-8 tracking-tight text-gray-700 dark:text-white">
+        <h1 className="text-4xl mob:text-3xl font-black mob:font-semibold text-center mb-8 mob:mb-4 mob:mt-8 tracking-tight text-gray-700 dark:text-white">
           TAP. SWAP. GO.
         </h1>
         <SwapCard />

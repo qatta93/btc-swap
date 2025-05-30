@@ -61,7 +61,7 @@ export function CurrencyInput({
         </div>
       </div>
 
-      <div className="text-xs text-muted-foreground mt-1 space-y-0.5 min-h-[1rem]">
+      <div className="text-xs mob:text- text-muted-foreground mt-1 space-y-0.5 min-h-[1rem]">
         {conversionRate !== undefined ? (
           <div>
             1 {crypto.symbol} = {formattedRate} {targetCurrencySymbol}
@@ -73,7 +73,7 @@ export function CurrencyInput({
 
       {showValidationError && (
         <div className="text-xs text-error-500 dark:text-error-400 mt-1">
-          Please enter a value greater than 0
+          Please enter more than 0
         </div>
       )}
     </div>
