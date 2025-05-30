@@ -4,7 +4,7 @@ import Image from "next/image";
 import type { CryptoOption } from "@/types/crypto";
 import Input from "@/components/atoms/Input";
 import { formatDisplayValue, parseInputValue } from "./utils";
-import { cn } from "@/lib/utils"; // Zakładam, że masz utila `cn`
+import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 
 interface CurrencyInputProps {
@@ -44,10 +44,11 @@ export function CurrencyInput({
     value.trim() !== "" && (isNaN(numericValue) || numericValue <= 0);
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full relative">
       <span className="text-sm text-muted-foreground font-medium mb-1">
         {label}
       </span>
+
       <div
         className={cn(
           "flex items-center justify-between bg-background px-4 py-3 rounded-xl border",
@@ -86,12 +87,12 @@ export function CurrencyInput({
             )}
           </motion.div>
         ) : (
-          <div className="min-h-[1rem]"></div>
+          <div className="min-h-[1rem]" />
         )}
       </AnimatePresence>
 
       {showValidationError && (
-        <div className="text-xs text-error-500 dark:text-error-400 mt-1">
+        <div className="absolute text-xs text-error-500 dark:text-error-400 top-full left-0">
           Please enter more than 0
         </div>
       )}

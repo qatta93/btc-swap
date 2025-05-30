@@ -13,7 +13,6 @@ import SwapConfirmationModal from "@/components/modules/ConfirmationModal";
 import SwapSuccessModal from "@/components/modules/SuccessModal";
 import { SWAP_ANIMATION_DURATION } from "./config";
 
-
 export default function SwapCard() {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -94,7 +93,7 @@ export default function SwapCard() {
         </motion.div>
       </div>
 
-      <div className="p-5 pt-0">
+      <div className="p-5 relative">
         <Button
           onClick={handleButtonClick}
           disabled={!isValidTrade || isLoading}>
@@ -107,10 +106,9 @@ export default function SwapCard() {
             "Get started"
           )}
         </Button>
-
         {error && (
-          <p className="text-xs text-error-500 dark:text-error-400 text-center mt-2">
-            Error fetching rate: {error}
+          <p className="absolute bottom-[2px] w-full left-1/2 transform -translate-x-1/2 text-xs text-error-500 dark:text-error-400 text-center mt-2">
+            Error fetching rate. Please try later.
           </p>
         )}
       </div>
