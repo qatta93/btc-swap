@@ -8,6 +8,7 @@ import { useConfirmationModal } from "@/components/modules/ConfirmationModal/use
 import { Button } from "@/components/atoms/Button";
 import { useCryptoStore } from "@/stores/useCryptoStore";
 import { trackSwapConfirmed, trackFeeInfoView, trackNetworkCostInfoView } from "@/lib/analytics";
+import { formatDisplayValue } from "@/components/modules/CurrencyInput/utils";
 
 interface SwapConfirmationModalProps {
   isOpen: boolean;
@@ -99,7 +100,7 @@ export default function SwapConfirmationModal({
           <div className="flex items-center justify-between mb-4">
             <div>
               <div className="text-2xl text-gray-980">
-                {sellAmount}
+                {formatDisplayValue(sellAmount)}
                 <span className="ml-2 font-semibold">{fromSymbol}</span>
               </div>
             </div>
@@ -117,7 +118,7 @@ export default function SwapConfirmationModal({
           <div className="flex items-center justify-between mb-6">
             <div>
               <div className="text-2xl text-gray-900 dark:text-white">
-                {buyAmount}
+                {formatDisplayValue(buyAmount)}
                 <span className="ml-2 font-semibold">{toSymbol}</span>
               </div>
             </div>

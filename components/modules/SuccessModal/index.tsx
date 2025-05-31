@@ -7,6 +7,7 @@ import { useConfirmationModal } from "@/components/modules/ConfirmationModal/use
 import { useCryptoStore } from "@/stores/useCryptoStore";
 import { Button } from "@/components/atoms/Button";
 import { trackSwapCompleted, trackViewTransactionDetails } from "@/lib/analytics";
+import { formatDisplayValue } from "@/components/modules/CurrencyInput/utils";
 
 interface SwapSuccessModalProps {
   isOpen: boolean;
@@ -154,7 +155,7 @@ export default function SwapSuccessModal({
               <div className="flex items-center">
                 <img src={fromIcon} alt={fromSymbol} className="w-8 h-8 mr-2" />
                 <span className="text-gray-900 dark:text-white font-medium">
-                  {sellAmount} {fromSymbol}
+                  {formatDisplayValue(sellAmount)} {fromSymbol}
                 </span>
               </div>
               <ArrowDown className="hidden mob:block h-5 w-5 text-gray-400" />
@@ -162,7 +163,7 @@ export default function SwapSuccessModal({
               <div className="flex items-center">
                 <img src={toIcon} alt={toSymbol} className="w-8 h-8 mr-2" />
                 <span className="text-gray-900 dark:text-white font-medium">
-                  {buyAmount} {toSymbol}
+                  {formatDisplayValue(buyAmount)} {toSymbol}
                 </span>
               </div>
             </div>
