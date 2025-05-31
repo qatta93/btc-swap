@@ -1,71 +1,58 @@
 "use client";
 
-import React, { memo } from "react";
+import React from "react";
 import { CurrencyInput } from "@/components/modules/CurrencyInput/CurrencyInput";
 import { motion } from "framer-motion";
 import { ArrowUpDown } from "lucide-react";
 import type { CryptoOption } from "@/types/crypto";
+import { useCardSide } from "./useCardSide";
 import { useCryptoStore } from "@/stores/useCryptoStore";
-import { useSwapLogic } from "@/hooks/useSwapLogic";
 
 interface CardSideProps {
   isFront: boolean;
+  sellAmount: string;
+  buyAmount: string;
+  rateSell: number;
+  rateBuy: number;
   sellCryptoOption: CryptoOption;
   buyCryptoOption: CryptoOption;
   isFlipping: boolean;
   iconRotation: number;
+  setSellAmount: (val: string) => void;
+  setBuyAmount: (val: string) => void;
   handleSwap: () => void;
+  isRateLoading?: boolean;
 }
 
-export const CardSide = memo(function CardSide({
+export const CardSide = ({
   isFront,
+  sellAmount,
+  buyAmount,
   sellCryptoOption,
   buyCryptoOption,
+  rateSell,
+  rateBuy,
   isFlipping,
   iconRotation,
+  setSellAmount,
+  setBuyAmount,
   handleSwap,
-}: CardSideProps) {
-  const {
-    sellAmount,
-    buyAmount,
-    handleSellChange,
-    handleBuyChange,
-    rate,
-    isRateLoading,
-  } = useSwapLogic();
+  isRateLoading = false,
+}: CardSideProps) => {
+  const { handleTopChange, handleBottomChange } = useCardSide({
+    isFront,
+    setSellAmount,
+    setBuyAmount,
+  });
 
   const swapLabels = useCryptoStore((state) => state.content?.swapCard);
-
-  const rateSell = isFront 
-    ? (rate ? 1 / rate : 0) 
-    : rate ?? 0;
-  
-  const rateBuy = isFront 
-    ? rate ?? 0 
-    : (rate ? 1 / rate : 0);
-
-  const handleTopChange = (value: string) => {
-    if (isFront) {
-      handleSellChange(value);
-    } else {
-      handleBuyChange(value);
-    }
-  };
-
-  const handleBottomChange = (value: string) => {
-    if (isFront) {
-      handleBuyChange(value);
-    } else {
-      handleSellChange(value);
-    }
-  };
 
   return (
     <div className="absolute w-full h-full p-5 backface-hidden">
       <CurrencyInput
         crypto={sellCryptoOption}
         label={swapLabels?.sell as string}
-        value={isFront ? sellAmount : buyAmount}
+        value={sellAmount}
         onChange={handleTopChange}
         conversionRate={rateSell}
         targetCurrencySymbol={buyCryptoOption.symbol}
@@ -91,7 +78,7 @@ export const CardSide = memo(function CardSide({
       <CurrencyInput
         crypto={buyCryptoOption}
         label={swapLabels?.buy as string}
-        value={isFront ? buyAmount : sellAmount}
+        value={buyAmount}
         onChange={handleBottomChange}
         conversionRate={rateBuy}
         targetCurrencySymbol={sellCryptoOption.symbol}
@@ -100,6 +87,6 @@ export const CardSide = memo(function CardSide({
       />
     </div>
   );
-});
+};
 
 export default CardSide;

@@ -1,5 +1,5 @@
 import { delay } from "framer-motion";
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { SWAP_ANIMATION_DURATION } from "./config";
 
 export const useSwapCardAnimation = (toggleSwapDirection: () => void) => {
@@ -7,19 +7,18 @@ export const useSwapCardAnimation = (toggleSwapDirection: () => void) => {
   const [isFlipping, setIsFlipping] = useState(false);
   const [iconRotation, setIconRotation] = useState(0);
 
-  const handleSwapAnimation = useCallback(() => {
+  const handleSwapAnimation = () => {
     if (isFlipping) return;
-    
     setIsFlipping(true);
-    setIsFlipped((prev) => !prev);
-    
+
+    setIsFlipped(!isFlipped);
     toggleSwapDirection();
 
     delay(() => {
-      setIconRotation((prev) => (prev === 0 ? 180 : 0));
+      setIconRotation(isFlipped ? 0 : 180);
       setIsFlipping(false);
     }, SWAP_ANIMATION_DURATION * 1000);
-  }, [isFlipping, toggleSwapDirection]);
+  };
 
   return {
     isFlipped,
