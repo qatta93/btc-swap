@@ -9,6 +9,7 @@ Below is a list of possible improvements and features that can be implemented to
 ---
 
 ## 🔐 Authentication & Security
+
 - User authentication (Sign up / Log in)
 - Two-factor authentication (2FA)
 - JWT access/refresh tokens with automatic renewal
@@ -20,6 +21,7 @@ Below is a list of possible improvements and features that can be implemented to
 ---
 
 ## 🔄 Exchange Functionality
+
 - Add support for more cryptocurrencies (ETH, LTC, USDT, etc.)
 - Real-time exchange rate updates via WebSocket or polling
 - Transaction history log
@@ -30,6 +32,7 @@ Below is a list of possible improvements and features that can be implemented to
 ---
 
 ## 🧾 UI/UX Improvements
+
 - Error handling and feedback for failed transactions
 - Multilingual support (i18n)
 
@@ -47,6 +50,7 @@ Below is a list of possible improvements and features that can be implemented to
 ---
 
 ## 📊 Analytics & Data
+
 - Live price charts (candlestick, line graph)
 - Historical rate comparison
 - User portfolio dashboard (track your holdings)
@@ -54,6 +58,7 @@ Below is a list of possible improvements and features that can be implemented to
 ---
 
 ## 💳 Payments & Withdrawals
+
 - Integration with payment gateways (e.g. Stripe, MoonPay)
 - Wallet address input & validation
 - QR code scanner for wallet addresses
@@ -62,13 +67,16 @@ Below is a list of possible improvements and features that can be implemented to
 ---
 
 ## 🛠 Developer Tools
+
 - Unit and integration testing (e.g. Jest, Cypress)
 - Environment variable support for API keys (e.g. CoinGecko, Coinbase API)
 - CI/CD pipeline configuration
+- Application state management with Zustand for more complex logic
 
 ---
 
 ## 🌐 Blockchain Integration
+
 - Connect with MetaMask or WalletConnect
 - Smart contract interaction (for decentralized swaps)
 - Gas fee estimations (for ETH-based tokens)
@@ -76,14 +84,14 @@ Below is a list of possible improvements and features that can be implemented to
 ---
 
 ## 📦 Deployment Options
+
 - PWA support (Progressive Web App)
 - Offline mode for transaction history
 
 ---
 
 ## 📥 Feedback & Support
+
 - Contact form or live chat integration
 - In-app FAQ/help guide
 - User rating system for support
-
-

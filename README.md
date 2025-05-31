@@ -10,6 +10,7 @@ BTC Swap is a modern web application for swapping cryptocurrencies. Built with t
 - 🔧 Built with Next.js and TypeScript
 - 🌐 Deployed on Vercel
 - 🔄 Optimized API calls with caching and periodic updates
+- 📝 Prepared for CMS integration with type-safe content management using Zustand
 
 ## 🔗 Live Demo
 
@@ -22,6 +23,8 @@ Check out the live version of the app:
 - [Next.js](https://nextjs.org/) – React framework for production
 - [TypeScript](https://www.typescriptlang.org/) – Static typing for JavaScript
 - [Tailwind CSS](https://tailwindcss.com/) – Utility-first CSS framework
+- [Zustand](https://github.com/pmndrs/zustand) – State management for React
+- [Zod](https://zod.dev/) – TypeScript-first schema validation
 - [Crypto API](https://www.coingecko.com/en/api) – Primary API for crypto price data
 - [Coinbase API](https://developers.coinbase.com/) – Fallback API for exchange rates
 - Analytics – Prepared for Google Analytics integration
@@ -84,4 +87,16 @@ The `useExchangeRate` hook has been optimized for performance:
 - Loading indicators show when exchange rates are being fetched
 - Input fields remain responsive even during API calls
 - Swap button is disabled during rate loading to prevent invalid trades
+- "Loading..." state button is intentionally designed to simulate a real-world application experience with a brief delay before showing the confirmation modal
 
+## 🖥️ CMS Implementation
+
+The application is prepared for CMS integration with a structured approach to content management:
+
+- **Type-Safe Content**: All CMS content is defined with TypeScript interfaces for type safety
+- **Zod Schema Validation**: Content is validated using Zod schemas to ensure data integrity
+- **Zustand Store**: Content is managed through a Zustand store for efficient state management
+- **Mock CMS Service**: A mock CMS service is implemented to simulate real CMS integration
+- **Internationalization Ready**: The structure supports easy addition of multiple languages
+
+This approach allows for seamless integration with headless CMS platforms in the future while maintaining a consistent developer experience during development.

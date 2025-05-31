@@ -9,6 +9,7 @@ export const zodContentSchema = z.object({
       fetchError: z.string(),
     }),
     loading: z.string(),
+    loadingRates: z.string(),
     close: z.string(),
   }),
   swapCard: z.object({

@@ -48,7 +48,7 @@ export default function SwapSuccessModal({
 
       const fromCurrency = isReversed ? "usd" : "btc";
       const toCurrency = isReversed ? "btc" : "usd";
-      const transactionId = `tx-${Date.now()}`; // Mock transaction ID
+      const transactionId = `tx-${Date.now()}`;
       trackSwapCompleted(
         fromCurrency,
         toCurrency,

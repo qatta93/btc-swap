@@ -11,7 +11,6 @@ import { useSwapLogic } from "@/hooks/useSwapLogic";
 import { useSwapCardAnimation } from "./useSwapCardAnimation";
 import SwapConfirmationModal from "@/components/modules/ConfirmationModal";
 import SwapSuccessModal from "@/components/modules/SuccessModal";
-import { SWAP_ANIMATION_DURATION } from "./config";
 import { useCryptoStore } from "@/stores/useCryptoStore";
 import { trackSwapConfirmationOpen, trackPageView } from "@/lib/analytics";
 import { useEffect } from "react";
@@ -42,9 +41,6 @@ export default function SwapCard() {
 
   const { isFlipped, isFlipping, iconRotation, handleSwapAnimation } =
     useSwapCardAnimation(toggleSwapDirection);
-
-  const sellCrypto = cryptoOptions[1];
-  const buyCrypto = cryptoOptions[0];
 
   const rateUsdToBtc = isReversed ? rate ?? 0 : rate ? 1 / rate : 0;
   const rateBtcToUsd = isReversed ? (rate ? 1 / rate : 0) : rate ?? 0;
@@ -121,8 +117,7 @@ export default function SwapCard() {
           ) : isRateLoading ? (
             <span className="flex items-center gap-2 justify-center">
               <Loader2 className="w-6 h-6 animate-spin" />
-              {"Loading rates..."}
-              {/* {content?.general.loadingRates || "Loading rates..."} */}
+              {content?.general.loadingRates}
             </span>
           ) : (
             content?.swapCard.button

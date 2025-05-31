@@ -14,6 +14,7 @@ export const getCryptoPageContent =
           fetchError: "Error fetching rate. Please try later.",
         },
         loading: "Loading...",
+        loadingRates: "Loading rates...",
         close: "Close",
       },
       swapCard: {

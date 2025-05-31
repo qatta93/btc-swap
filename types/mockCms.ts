@@ -5,10 +5,11 @@ export interface CryptoPageContent {
     errors: {
       moreThanZero: string;
       fetchError: string;
-    },
+    };
     loading: string;
+    loadingRates: string;
     close: string;
-  }
+  };
   swapCard: {
     sell: string;
     buy: string;
@@ -27,5 +28,5 @@ export interface CryptoPageContent {
     title: string;
     subtitle: string;
     detailsButton: string;
-  }
+  };
 }
