@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 import { useExchangeRate } from "@/hooks/useExchangeRate";
 import { delay } from "framer-motion";
 import { SWAP_ANIMATION_DURATION } from "@/components/modules/SwapCard/config";
+import { trackAmountInput, trackSwapDirectionToggle } from "@/lib/analytics";
 
 export const useSwapLogic = () => {
     const [sellAmount, setSellAmount] = useState("");
@@ -26,11 +27,14 @@ export const useSwapLogic = () => {
           const roundedTo = result > 1 ? 3 : 6;
 
           setBuyAmount(result.toFixed(roundedTo).replace(/\.?0+$/, ""));
+          
+          const currencyId = isReversed ? "usd" : "btc";
+          trackAmountInput(currencyId, value, true);
         } else {
           setBuyAmount("");
         }
       },
-      [exchangeRate]
+      [exchangeRate, isReversed]
     );
 
     const handleBuyChange = useCallback(
@@ -42,20 +46,29 @@ export const useSwapLogic = () => {
           const roundedTo = result > 1 ? 3 : 6;
 
           setSellAmount(result.toFixed(roundedTo).replace(/\.?0+$/, ""));
+          
+          const currencyId = isReversed ? "btc" : "usd";
+          trackAmountInput(currencyId, value, false);
         } else {
           setSellAmount("");
         }
       },
-      [exchangeRate]
+      [exchangeRate, isReversed]
     );
 
     const toggleSwapDirection = useCallback(() => {
+      const fromCurrency = isReversed ? "usd" : "btc";
+      const toCurrency = isReversed ? "btc" : "usd";
+      
       setIsReversed((prev) => !prev);
+      
+      trackSwapDirectionToggle(fromCurrency, toCurrency);
+      
       const cancel = delay(() => {
         setSellAmount(buyAmount);
         setBuyAmount(sellAmount);
       }, SWAP_ANIMATION_DURATION * 1000 - 300);
-    }, [sellAmount, buyAmount]);
+    }, [sellAmount, buyAmount, isReversed]);
 
     const handleConfirm = () => {
         setIsSuccessConfirmationModalOpen(true);

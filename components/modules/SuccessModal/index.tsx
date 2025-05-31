@@ -6,6 +6,7 @@ import confetti from "canvas-confetti";
 import { useConfirmationModal } from "@/components/modules/ConfirmationModal/useConfirmationModal";
 import { useCryptoStore } from "@/stores/useCryptoStore";
 import { Button } from "@/components/atoms/Button";
+import { trackSwapCompleted, trackViewTransactionDetails } from "@/lib/analytics";
 
 interface SwapSuccessModalProps {
   isOpen: boolean;
@@ -40,13 +41,18 @@ export default function SwapSuccessModal({
       setIsAnimating(true);
       setConfettiComplete(false);
       triggerConfetti();
+      
+      const fromCurrency = isReversed ? "usd" : "btc";
+      const toCurrency = isReversed ? "btc" : "usd";
+      const transactionId = `tx-${Date.now()}`; // Mock transaction ID
+      trackSwapCompleted(fromCurrency, toCurrency, sellAmount, buyAmount, transactionId);
     } else {
       const timer = setTimeout(() => {
         setIsAnimating(false);
       }, 300);
       return () => clearTimeout(timer);
     }
-  }, [isOpen]);
+  }, [isOpen, isReversed, sellAmount, buyAmount]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -169,7 +175,9 @@ export default function SwapSuccessModal({
             className="py-3 px-4 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium rounded-xl transition-colors">
             {content?.general.close}
           </Button>
-          <Button className="py-3 px-4 bg-pink-500 hover:bg-pink-600 text-white font-medium rounded-xl transition-colors flex items-center justify-center">
+          <Button 
+            onClick={() => trackViewTransactionDetails(`tx-${Date.now()}`)}
+            className="py-3 px-4 bg-pink-500 hover:bg-pink-600 text-white font-medium rounded-xl transition-colors flex items-center justify-center">
             {content?.successModal?.detailsButton ?? "View Details"}
             <ArrowUpRight className="ml-1 h-4 w-4" />
           </Button>

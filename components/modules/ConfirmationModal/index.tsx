@@ -7,6 +7,7 @@ import "react-tooltip/dist/react-tooltip.css";
 import { useConfirmationModal } from "@/components/modules/ConfirmationModal/useConfirmationModal";
 import { Button } from "@/components/atoms/Button";
 import { useCryptoStore } from "@/stores/useCryptoStore";
+import { trackSwapConfirmed, trackFeeInfoView, trackNetworkCostInfoView } from "@/lib/analytics";
 
 interface SwapConfirmationModalProps {
   isOpen: boolean;
@@ -149,6 +150,7 @@ export default function SwapConfirmationModal({
                     data-tooltip-content={
                       content?.confirmationModal.feeTooltip
                     }
+                    onMouseEnter={() => trackFeeInfoView()}
                   />
                 </div>
                 <span className="text-sm text-gray-900 dark:text-white">
@@ -166,6 +168,7 @@ export default function SwapConfirmationModal({
                     data-tooltip-content={
                       content?.confirmationModal.networkCostTooltip 
                     }
+                    onMouseEnter={() => trackNetworkCostInfoView()}
                   />
                 </div>
                 <span className="text-sm text-gray-900 dark:text-white">
@@ -175,7 +178,12 @@ export default function SwapConfirmationModal({
             </div>
           )}
 
-          <Button onClick={onConfirm}>
+          <Button onClick={() => {
+            const fromCurrency = isReversed ? "usd" : "btc";
+            const toCurrency = isReversed ? "btc" : "usd";
+            trackSwapConfirmed(fromCurrency, toCurrency, sellAmount, buyAmount);
+            onConfirm();
+          }}>
             {content?.confirmationModal.button}
           </Button>
         </div>

@@ -21,7 +21,8 @@ Check out the live version of the app:
 - [Next.js](https://nextjs.org/) – React framework for production
 - [TypeScript](https://www.typescriptlang.org/) – Static typing for JavaScript
 - [Tailwind CSS](https://tailwindcss.com/) – Utility-first CSS framework
-- [Crypto API](https://www.coingecko.com/en/api) – External API for crypto price data 
+- [Crypto API](https://www.coingecko.com/en/api) – External API for crypto price data
+- Analytics – Prepared for Google Analytics integration
 
 ## 🧑‍💻 Getting Started
 
@@ -29,7 +30,7 @@ To run the project locally:
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/btc-swap.git
+git clone https://github.com/qatta93/btc-swap.git
 cd btc-swap
 
 # Install dependencies
@@ -37,3 +38,26 @@ npm install
 
 # Run the development server
 npm run dev
+```
+
+## 📊 Analytics Integration
+
+The application is prepared for Google Analytics integration. To enable Google Analytics:
+
+1. Create a Google Analytics 4 property and obtain your Measurement ID (G-XXXXXXXXXX)
+2. Add the Measurement ID to your environment variables:
+   - Create a `.env.local` file in the root directory
+   - Add the following line: `NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX`
+   - Alternatively, set this environment variable in your hosting platform
+
+The analytics module (`lib/analytics.ts`) provides tracking for:
+
+- Page views
+- Exchange rate fetches
+- Swap direction toggles
+- Amount inputs
+- Swap confirmations and completions
+- Fee information views
+- Error tracking
+
+All analytics events are automatically disabled in development mode and enabled in production.

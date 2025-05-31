@@ -13,8 +13,14 @@ import SwapConfirmationModal from "@/components/modules/ConfirmationModal";
 import SwapSuccessModal from "@/components/modules/SuccessModal";
 import { SWAP_ANIMATION_DURATION } from "./config";
 import { useCryptoStore } from "@/stores/useCryptoStore";
+import { trackSwapConfirmationOpen, trackPageView } from "@/lib/analytics";
+import { useEffect } from "react";
 
 export default function SwapCard() {
+
+  useEffect(() => {
+    trackPageView('/', 'BTC Swap');
+  }, []);
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -50,6 +56,10 @@ export default function SwapCard() {
     setTimeout(() => {
       setIsLoading(false);
       setIsModalOpen(true);
+      
+      const fromCurrency = isReversed ? "usd" : "btc";
+      const toCurrency = isReversed ? "btc" : "usd";
+      trackSwapConfirmationOpen(fromCurrency, toCurrency, sellAmount, buyAmount);
     }, 1000);
   };
 
