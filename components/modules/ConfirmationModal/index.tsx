@@ -6,6 +6,7 @@ import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import { useConfirmationModal } from "@/components/modules/ConfirmationModal/useConfirmationModal";
 import { Button } from "@/components/atoms/Button";
+import { useCryptoStore } from "@/stores/useCryptoStore";
 
 interface SwapConfirmationModalProps {
   isOpen: boolean;
@@ -24,6 +25,8 @@ export default function SwapConfirmationModal({
   buyAmount,
   isReversed,
 }: SwapConfirmationModalProps) {
+  const content = useCryptoStore((state) => state.content);
+
   const {
     showMore,
     setShowMore,
@@ -70,7 +73,7 @@ export default function SwapConfirmationModal({
   if (!isOpen && !isAnimating) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 ">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
       <div
         ref={modalRef}
         className={`w-[448px] min-h-[376px] max-w-full bg-white dark:bg-dark dark:text-white rounded-xl overflow-hidden shadow-xl transform transition-all duration-200 ease-in-out mt-[25px] ${
@@ -81,7 +84,7 @@ export default function SwapConfirmationModal({
         <div className="p-6 pb-4">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-medium text-gray-900 dark:text-white">
-              You're swapping
+              {content?.confirmationModal.title}
             </h2>
             <button
               onClick={onClose}
@@ -125,7 +128,7 @@ export default function SwapConfirmationModal({
           <button
             onClick={() => setShowMore(!showMore)}
             className="flex items-center justify-center w-full text-sm text-gray-600 dark:text-white hover:text-gray-800 mb-4">
-            Show more
+            {content?.confirmationModal.showMore}
             <ChevronDown
               className={`ml-1 h-4 w-4 transition-transform ${
                 showMore ? "rotate-180" : ""
@@ -138,12 +141,14 @@ export default function SwapConfirmationModal({
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <span className="text-sm text-gray-600 dark:text-white">
-                    Fee (0.25%)
+                    {content?.confirmationModal.fee}
                   </span>
                   <Info
                     className="ml-1 h-3 w-3 text-gray-400 dark:text-white cursor-pointer"
                     data-tooltip-id="tooltip"
-                    data-tooltip-content="Platform fee charged by the exchange for facilitating the swap between cryptocurrencies"
+                    data-tooltip-content={
+                      content?.confirmationModal.feeTooltip
+                    }
                   />
                 </div>
                 <span className="text-sm text-gray-900 dark:text-white">
@@ -153,12 +158,14 @@ export default function SwapConfirmationModal({
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <span className="text-sm text-gray-600 dark:text-white">
-                    Network cost
+                    {content?.confirmationModal.networkCost}
                   </span>
                   <Info
                     className="ml-1 h-3 w-3 text-gray-400 dark:text-white cursor-pointer"
                     data-tooltip-id="tooltip"
-                    data-tooltip-content="Blockchain transaction fee (gas fee) required to execute the swap on the network"
+                    data-tooltip-content={
+                      content?.confirmationModal.networkCostTooltip 
+                    }
                   />
                 </div>
                 <span className="text-sm text-gray-900 dark:text-white">
@@ -168,7 +175,9 @@ export default function SwapConfirmationModal({
             </div>
           )}
 
-          <Button onClick={onConfirm}>Swap</Button>
+          <Button onClick={onConfirm}>
+            {content?.confirmationModal.button}
+          </Button>
         </div>
       </div>
 

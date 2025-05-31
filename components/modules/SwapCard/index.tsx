@@ -12,6 +12,7 @@ import { useSwapCardAnimation } from "./useSwapCardAnimation";
 import SwapConfirmationModal from "@/components/modules/ConfirmationModal";
 import SwapSuccessModal from "@/components/modules/SuccessModal";
 import { SWAP_ANIMATION_DURATION } from "./config";
+import { useCryptoStore } from "@/stores/useCryptoStore";
 
 export default function SwapCard() {
   const [isLoading, setIsLoading] = useState(false);
@@ -51,6 +52,8 @@ export default function SwapCard() {
       setIsModalOpen(true);
     }, 1000);
   };
+
+  const content = useCryptoStore((state) => state.content);
 
   return (
     <div className="bg-white rounded-2xl shadow-lg overflow-hidden dark:bg-dark mob:min-h-[380px] flex flex-col justify-between">
@@ -100,15 +103,15 @@ export default function SwapCard() {
           {isLoading ? (
             <span className="flex items-center gap-2 justify-center">
               <Loader2 className="w-6 h-6 animate-spin" />
-              Loading...
+              {content?.general.loading}
             </span>
           ) : (
-            "Get started"
+            content?.swapCard.button
           )}
         </Button>
         {error && (
           <p className="absolute bottom-[2px] w-full left-1/2 transform -translate-x-1/2 text-xs text-error-500 dark:text-error-400 text-center mt-2">
-            Error fetching rate. Please try later.
+            {content?.general.errors.fetchError}
           </p>
         )}
       </div>

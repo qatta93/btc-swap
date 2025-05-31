@@ -6,12 +6,13 @@ import Input from "@/components/atoms/Input";
 import { formatDisplayValue, parseInputValue } from "./utils";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
+import { useCryptoStore } from "@/stores/useCryptoStore";
 
 interface CurrencyInputProps {
   value: string;
   onChange: (value: string) => void;
   crypto: CryptoOption;
-  label: "Sell" | "Buy";
+  label: string;
   conversionRate?: number;
   targetCurrencySymbol?: string;
   isFlipping: boolean;
@@ -42,6 +43,8 @@ export function CurrencyInput({
   const numericValue = parseFloat(value);
   const showValidationError =
     value.trim() !== "" && (isNaN(numericValue) || numericValue <= 0);
+
+  const content = useCryptoStore((state) => state.content); 
 
   return (
     <div className="flex flex-col w-full relative">
@@ -93,7 +96,7 @@ export function CurrencyInput({
 
       {showValidationError && (
         <div className="absolute text-xs text-error-500 dark:text-error-400 top-full left-0">
-          Please enter more than 0
+          {content?.general.errors.moreThanZero}
         </div>
       )}
     </div>

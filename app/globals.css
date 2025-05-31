@@ -79,14 +79,13 @@
   --chart-5: hsl(340, 75%, 55%);
 }
 
-/* Body korzysta ze zmiennych */
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Utility classes */
 @layer utilities {
   .perspective-1000 {
     perspective: 1000px;
@@ -106,5 +105,92 @@ body {
 
   .rotateX-180 {
     transform: rotateX(180deg);
+  }
+
+}
+
+@layer utilities {
+  .animate-float-slow {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-float-medium {
+    animation: float 4s ease-in-out infinite;
+  }
+
+  .animate-float-fast {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-spin-slow {
+    animation: spin 3s linear infinite;
+  }
+
+  .animate-spin-reverse {
+    animation: spin 2s linear infinite reverse;
+  }
+
+  .animate-spin-very-slow {
+    animation: spin 8s linear infinite;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 2s ease-in-out infinite;
+  }
+
+  .animate-bounce-delay-0 {
+    animation: bounce 1.4s ease-in-out infinite;
+  }
+
+  .animate-bounce-delay-1 {
+    animation: bounce 1.4s ease-in-out 0.2s infinite;
+  }
+
+  .animate-bounce-delay-2 {
+    animation: bounce 1.4s ease-in-out 0.4s infinite;
+  }
+
+  .animate-pulse-dot-1 {
+    animation: pulse-dot 1.5s ease-in-out infinite;
+  }
+
+  .animate-pulse-dot-2 {
+    animation: pulse-dot 1.5s ease-in-out 0.5s infinite;
+  }
+
+  .animate-pulse-dot-3 {
+    animation: pulse-dot 1.5s ease-in-out 1s infinite;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(180deg);
+  }
+}
+
+@keyframes pulse-slow {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
   }
 }

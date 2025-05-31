@@ -44,7 +44,6 @@ export const useBackgroundWrapper = () => {
                 let x, y
 
                 while (!validPosition && attempts < maxAttempts) {
-                    // Ensure window is defined (client-side only)
                     if (typeof window !== "undefined") {
                         x = Math.random() * (window.innerWidth - 200) + 100
                         y = Math.random() * (window.innerHeight - 200) + 100
@@ -54,10 +53,10 @@ export const useBackgroundWrapper = () => {
                             return distance >= minDistance
                         })
                     } else {
-                        // Default or break if window is not available (e.g., SSR)
-                        x = Math.random() * 800 + 100 // Fallback width
-                        y = Math.random() * 600 + 100 // Fallback height
-                        validPosition = true; // Or handle SSR appropriately
+    
+                        x = Math.random() * 800 + 100
+                        y = Math.random() * 600 + 100
+                        validPosition = true;
                     }
                     attempts++
                 }
@@ -99,7 +98,7 @@ export const useBackgroundWrapper = () => {
         }))
 
         setIcons(initialIcons)
-    }, []) // cryptoIcons dependency removed as it's stable
+    }, [])
 
     useEffect(() => {
         if (hoveredIcon !== null) return

@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { X, Check, ArrowUpRight } from "lucide-react";
+import { X, Check, ArrowUpRight, ArrowRight, ArrowDown } from "lucide-react";
 import confetti from "canvas-confetti";
 import { useConfirmationModal } from "@/components/modules/ConfirmationModal/useConfirmationModal";
-import { ArrowRight, ArrowDown } from "lucide-react";
+import { useCryptoStore } from "@/stores/useCryptoStore";
+import { Button } from "@/components/atoms/Button";
 
 interface SwapSuccessModalProps {
   isOpen: boolean;
@@ -31,6 +32,8 @@ export default function SwapSuccessModal({
     buyAmount,
     isReversed,
   });
+
+  const content = useCryptoStore((state) => state.content);
 
   useEffect(() => {
     if (isOpen) {
@@ -133,10 +136,10 @@ export default function SwapSuccessModal({
 
           <div className="text-center mb-6">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-              Your swap is complete!
+              {content?.successModal.title}
             </h3>
             <p className="text-gray-600 dark:text-white">
-              You've successfully swapped:
+              {content?.successModal.subtitle}
             </p>
           </div>
 
@@ -161,15 +164,15 @@ export default function SwapSuccessModal({
         </div>
 
         <div className="grid grid-cols-2 gap-4 px-6 pt-0 pb-8">
-          <button
+          <Button
             onClick={onClose}
             className="py-3 px-4 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium rounded-xl transition-colors">
-            Close
-          </button>
-          <button className="py-3 px-4 bg-pink-500 hover:bg-pink-600 text-white font-medium rounded-xl transition-colors flex items-center justify-center">
-            View Details
+            {content?.general.close}
+          </Button>
+          <Button className="py-3 px-4 bg-pink-500 hover:bg-pink-600 text-white font-medium rounded-xl transition-colors flex items-center justify-center">
+            {content?.successModal?.detailsButton ?? "View Details"}
             <ArrowUpRight className="ml-1 h-4 w-4" />
-          </button>
+          </Button>
         </div>
       </div>
     </div>

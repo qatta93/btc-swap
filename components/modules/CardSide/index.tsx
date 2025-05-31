@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { ArrowUpDown } from "lucide-react";
 import type { CryptoOption } from "@/types/crypto";
 import { useCardSide } from "./useCardSide";
+import { useCryptoStore } from "@/stores/useCryptoStore";
 
 interface CardSideProps {
   isFront: boolean;
@@ -42,11 +43,13 @@ export const CardSide = ({
     setBuyAmount,
   });
 
+  const swapLabels = useCryptoStore((state) => state.content?.swapCard);
+
   return (
     <div className="absolute w-full h-full p-5 backface-hidden">
       <CurrencyInput
-        crypto={sellCryptoOption} // e.g., USD if isFront, BTC if !isFront
-        label="Sell"
+        crypto={sellCryptoOption}
+        label={swapLabels?.sell as string}
         value={sellAmount}
         onChange={handleTopChange}
         conversionRate={rateSell}
@@ -54,7 +57,7 @@ export const CardSide = ({
         isFlipping={isFlipping}
       />
 
-      <div className="flex justify-center -my-2 relative z-10 mob:my-[4px]">
+      <div className="flex justify-center relative z-10 my-[4px]">
         <motion.button
           onClick={handleSwap}
           className="bg-white border border-gray-200 rounded-full p-2 shadow-sm dark:bg-dark"
@@ -70,8 +73,8 @@ export const CardSide = ({
       </div>
 
       <CurrencyInput
-        crypto={buyCryptoOption} // e.g., BTC if isFront, USD if !isFront
-        label="Buy"
+        crypto={buyCryptoOption}
+        label={swapLabels?.buy as string}
         value={buyAmount}
         onChange={handleBottomChange}
         conversionRate={rateBuy}
