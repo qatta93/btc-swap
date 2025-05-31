@@ -7,7 +7,11 @@ import "react-tooltip/dist/react-tooltip.css";
 import { useConfirmationModal } from "@/components/modules/ConfirmationModal/useConfirmationModal";
 import { Button } from "@/components/atoms/Button";
 import { useCryptoStore } from "@/stores/useCryptoStore";
-import { trackSwapConfirmed, trackFeeInfoView, trackNetworkCostInfoView } from "@/lib/analytics";
+import {
+  trackSwapConfirmed,
+  trackFeeInfoView,
+  trackNetworkCostInfoView,
+} from "@/lib/analytics";
 import { formatDisplayValue } from "@/components/modules/CurrencyInput/utils";
 
 interface SwapConfirmationModalProps {
@@ -88,18 +92,18 @@ export default function SwapConfirmationModal({
             <h2 className="text-lg font-medium text-gray-900 dark:text-white">
               {content?.confirmationModal.title}
             </h2>
-            <button
+            <Button
               onClick={onClose}
-              className="h-10 w-10 p-0 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
-              <X className="h-8 w-8" />
-            </button>
+              className="h-10 w-10 p-0 flex items-center justify-center rounded-full bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700">
+              <X className="h-8 w-8 text-gray-700" />
+            </Button>
           </div>
         </div>
 
         <div className="px-6 pb-6">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <div className="text-2xl text-gray-980">
+              <div className="text-2xl text-gray-900">
                 {formatDisplayValue(sellAmount)}
                 <span className="ml-2 font-semibold">{fromSymbol}</span>
               </div>
@@ -127,16 +131,16 @@ export default function SwapConfirmationModal({
             </div>
           </div>
 
-          <button
+          <Button
             onClick={() => setShowMore(!showMore)}
-            className="flex items-center justify-center w-full text-sm text-gray-600 dark:text-white hover:text-gray-800 mb-4">
+            className="flex items-center justify-center w-full text-sm text-gray-600 dark:text-white hover:text-gray-900 mb-4 bg-transparent hover:bg-transparent py-2">
             {content?.confirmationModal.showMore}
             <ChevronDown
               className={`ml-1 h-4 w-4 transition-transform ${
                 showMore ? "rotate-180" : ""
               }`}
             />
-          </button>
+          </Button>
 
           {showMore && (
             <div className="space-y-3 mb-6 p-4 bg-gray-50 dark:bg-dark rounded-lg">
@@ -148,9 +152,7 @@ export default function SwapConfirmationModal({
                   <Info
                     className="ml-1 h-3 w-3 text-gray-400 dark:text-white cursor-pointer"
                     data-tooltip-id="tooltip"
-                    data-tooltip-content={
-                      content?.confirmationModal.feeTooltip
-                    }
+                    data-tooltip-content={content?.confirmationModal.feeTooltip}
                     onMouseEnter={() => trackFeeInfoView()}
                   />
                 </div>
@@ -167,7 +169,7 @@ export default function SwapConfirmationModal({
                     className="ml-1 h-3 w-3 text-gray-400 dark:text-white cursor-pointer"
                     data-tooltip-id="tooltip"
                     data-tooltip-content={
-                      content?.confirmationModal.networkCostTooltip 
+                      content?.confirmationModal.networkCostTooltip
                     }
                     onMouseEnter={() => trackNetworkCostInfoView()}
                   />
@@ -179,12 +181,18 @@ export default function SwapConfirmationModal({
             </div>
           )}
 
-          <Button onClick={() => {
-            const fromCurrency = isReversed ? "usd" : "btc";
-            const toCurrency = isReversed ? "btc" : "usd";
-            trackSwapConfirmed(fromCurrency, toCurrency, sellAmount, buyAmount);
-            onConfirm();
-          }}>
+          <Button
+            onClick={() => {
+              const fromCurrency = isReversed ? "usd" : "btc";
+              const toCurrency = isReversed ? "btc" : "usd";
+              trackSwapConfirmed(
+                fromCurrency,
+                toCurrency,
+                sellAmount,
+                buyAmount
+              );
+              onConfirm();
+            }}>
             {content?.confirmationModal.button}
           </Button>
         </div>

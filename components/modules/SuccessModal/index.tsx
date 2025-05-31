@@ -6,7 +6,10 @@ import confetti from "canvas-confetti";
 import { useConfirmationModal } from "@/components/modules/ConfirmationModal/useConfirmationModal";
 import { useCryptoStore } from "@/stores/useCryptoStore";
 import { Button } from "@/components/atoms/Button";
-import { trackSwapCompleted, trackViewTransactionDetails } from "@/lib/analytics";
+import {
+  trackSwapCompleted,
+  trackViewTransactionDetails,
+} from "@/lib/analytics";
 import { formatDisplayValue } from "@/components/modules/CurrencyInput/utils";
 
 interface SwapSuccessModalProps {
@@ -42,11 +45,17 @@ export default function SwapSuccessModal({
       setIsAnimating(true);
       setConfettiComplete(false);
       triggerConfetti();
-      
+
       const fromCurrency = isReversed ? "usd" : "btc";
       const toCurrency = isReversed ? "btc" : "usd";
       const transactionId = `tx-${Date.now()}`; // Mock transaction ID
-      trackSwapCompleted(fromCurrency, toCurrency, sellAmount, buyAmount, transactionId);
+      trackSwapCompleted(
+        fromCurrency,
+        toCurrency,
+        sellAmount,
+        buyAmount,
+        transactionId
+      );
     } else {
       const timer = setTimeout(() => {
         setIsAnimating(false);
@@ -127,11 +136,11 @@ export default function SwapSuccessModal({
             : "opacity-0 translate-y-4 scale-95"
         }`}>
         <div className="p-6 pb-4 flex justify-end">
-          <button
+          <Button
             onClick={onClose}
-            className="h-10 w-10 p-0 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
-            <X className="h-8 w-8" />
-          </button>
+            className="h-10 w-10 p-0 flex items-center justify-center rounded-full bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700">
+            <X className="h-8 w-8 text-gray-700" />
+          </Button>
         </div>
 
         <div className="px-6 pb-6 mob:pb-2">
@@ -176,7 +185,7 @@ export default function SwapSuccessModal({
             className="py-3 px-4 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium rounded-xl transition-colors">
             {content?.general.close}
           </Button>
-          <Button 
+          <Button
             onClick={() => trackViewTransactionDetails(`tx-${Date.now()}`)}
             className="py-3 px-4 bg-pink-500 hover:bg-pink-600 text-white font-medium rounded-xl transition-colors flex items-center justify-center">
             {content?.successModal?.detailsButton ?? "View Details"}

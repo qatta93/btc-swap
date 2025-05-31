@@ -3,6 +3,7 @@
 import Image from "next/image";
 import type { CryptoOption } from "@/types/crypto";
 import Input from "@/components/atoms/Input";
+import Label from "@/components/atoms/Label";
 import { formatDisplayValue, parseInputValue } from "./utils";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
@@ -44,13 +45,13 @@ export function CurrencyInput({
   const showValidationError =
     value.trim() !== "" && (isNaN(numericValue) || numericValue <= 0);
 
-  const content = useCryptoStore((state) => state.content); 
+  const content = useCryptoStore((state) => state.content);
 
   return (
     <div className="flex flex-col w-full relative">
-      <span className="text-sm text-muted-foreground font-medium mb-1">
+      <Label className="mob:text-sm text-xl text-muted-foreground font-medium mb-1">
         {label}
-      </span>
+      </Label>
 
       <div
         className={cn(
