@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 
@@ -11,23 +11,19 @@ import { useSwapLogic } from "@/hooks/useSwapLogic";
 import { useSwapCardAnimation } from "./useSwapCardAnimation";
 import SwapConfirmationModal from "@/components/modules/ConfirmationModal";
 import SwapSuccessModal from "@/components/modules/SuccessModal";
-import { SWAP_ANIMATION_DURATION } from "./config";
 import { useCryptoStore } from "@/stores/useCryptoStore";
 import { trackSwapConfirmationOpen, trackPageView } from "@/lib/analytics";
-import { useEffect } from "react";
 
 export default function SwapCard() {
-
   useEffect(() => {
     trackPageView('/', 'BTC Swap');
   }, []);
+  
   const [isLoading, setIsLoading] = useState(false);
 
   const {
     sellAmount,
     buyAmount,
-    handleSellChange,
-    handleBuyChange,
     isReversed,
     toggleSwapDirection,
     rate,
@@ -38,16 +34,12 @@ export default function SwapCard() {
     handleConfirm,
     isSuccessConfirmationModalOpen,
     setIsSuccessConfirmationModalOpen,
+    fromId,
+    toId
   } = useSwapLogic();
 
   const { isFlipped, isFlipping, iconRotation, handleSwapAnimation } =
     useSwapCardAnimation(toggleSwapDirection);
-
-  const sellCrypto = cryptoOptions[1];
-  const buyCrypto = cryptoOptions[0];
-
-  const rateUsdToBtc = isReversed ? rate ?? 0 : rate ? 1 / rate : 0;
-  const rateBtcToUsd = isReversed ? (rate ? 1 / rate : 0) : rate ?? 0;
 
   const numericSellAmount = parseFloat(sellAmount);
   const isValidTrade = !isNaN(numericSellAmount) && numericSellAmount > 0 && !isRateLoading;
@@ -57,10 +49,7 @@ export default function SwapCard() {
     setTimeout(() => {
       setIsLoading(false);
       setIsModalOpen(true);
-      
-      const fromCurrency = isReversed ? "usd" : "btc";
-      const toCurrency = isReversed ? "btc" : "usd";
-      trackSwapConfirmationOpen(fromCurrency, toCurrency, sellAmount, buyAmount);
+      trackSwapConfirmationOpen(fromId, toId, sellAmount, buyAmount);
     }, 1000);
   };
 
@@ -76,34 +65,20 @@ export default function SwapCard() {
           style={{ height: "280px" }}>
           <CardSide
             isFront={true}
-            sellAmount={sellAmount}
-            buyAmount={buyAmount}
             sellCryptoOption={cryptoOptions[1]}
             buyCryptoOption={cryptoOptions[0]}
             handleSwap={handleSwapAnimation}
             isFlipping={isFlipping}
             iconRotation={iconRotation}
-            setSellAmount={handleSellChange}
-            setBuyAmount={handleBuyChange}
-            rateSell={rateUsdToBtc}
-            rateBuy={rateBtcToUsd}
-            isRateLoading={isRateLoading}
           />
           <div className="absolute w-full h-full rotateX-180 backface-hidden">
             <CardSide
               isFront={false}
-              sellAmount={sellAmount}
-              buyAmount={buyAmount}
               sellCryptoOption={cryptoOptions[0]}
               buyCryptoOption={cryptoOptions[1]}
               handleSwap={handleSwapAnimation}
               isFlipping={isFlipping}
               iconRotation={iconRotation}
-              setSellAmount={handleBuyChange}
-              setBuyAmount={handleSellChange}
-              rateSell={rateBtcToUsd}
-              rateBuy={rateUsdToBtc}
-              isRateLoading={isRateLoading}
             />
           </div>
         </motion.div>
@@ -122,7 +97,6 @@ export default function SwapCard() {
             <span className="flex items-center gap-2 justify-center">
               <Loader2 className="w-6 h-6 animate-spin" />
               {"Loading rates..."}
-              {/* {content?.general.loadingRates || "Loading rates..."} */}
             </span>
           ) : (
             content?.swapCard.button

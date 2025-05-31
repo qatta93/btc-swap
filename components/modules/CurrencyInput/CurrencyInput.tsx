@@ -1,5 +1,6 @@
 "use client";
 
+import { memo, useMemo } from "react";
 import Image from "next/image";
 import type { CryptoOption } from "@/types/crypto";
 import Input from "@/components/atoms/Input";
@@ -20,7 +21,7 @@ interface CurrencyInputProps {
   isRateLoading?: boolean;
 }
 
-export function CurrencyInput({
+export const CurrencyInput = memo(function CurrencyInput({
   value,
   onChange,
   crypto,
@@ -30,14 +31,17 @@ export function CurrencyInput({
   isFlipping,
   isRateLoading = false,
 }: CurrencyInputProps) {
-  const formattedRate =
-    conversionRate && conversionRate > 1
-      ? conversionRate?.toLocaleString(undefined, {
+  const formattedRate = useMemo(() => {
+    if (!conversionRate) return "";
+    
+    return conversionRate > 1
+      ? conversionRate.toLocaleString(undefined, {
           maximumFractionDigits: 2,
         })
-      : conversionRate?.toLocaleString(undefined, {
+      : conversionRate.toLocaleString(undefined, {
           maximumFractionDigits: 8,
         });
+  }, [conversionRate]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(parseInputValue(e.target.value));
@@ -106,4 +110,4 @@ export function CurrencyInput({
       )}
     </div>
   );
-}
+});
