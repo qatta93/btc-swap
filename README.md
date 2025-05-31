@@ -4,11 +4,12 @@ BTC Swap is a modern web application for swapping cryptocurrencies. Built with t
 
 ## 🚀 Features
 
-- ⚡ Real-time cryptocurrency exchange rates
+- ⚡ Real-time cryptocurrency exchange rates with smart caching
 - 💱 Clean and intuitive crypto swap interface
 - 🎨 Beautiful UI styled with Tailwind CSS
 - 🔧 Built with Next.js and TypeScript
 - 🌐 Deployed on Vercel
+- 🔄 Optimized API calls with caching and periodic updates
 
 ## 🔗 Live Demo
 
@@ -21,7 +22,8 @@ Check out the live version of the app:
 - [Next.js](https://nextjs.org/) – React framework for production
 - [TypeScript](https://www.typescriptlang.org/) – Static typing for JavaScript
 - [Tailwind CSS](https://tailwindcss.com/) – Utility-first CSS framework
-- [Crypto API](https://www.coingecko.com/en/api) – External API for crypto price data
+- [Crypto API](https://www.coingecko.com/en/api) – Primary API for crypto price data
+- [Coinbase API](https://developers.coinbase.com/) – Fallback API for exchange rates
 - Analytics – Prepared for Google Analytics integration
 
 ## 🧑‍💻 Getting Started
@@ -61,3 +63,25 @@ The analytics module (`lib/analytics.ts`) provides tracking for:
 - Error tracking
 
 All analytics events are automatically disabled in development mode and enabled in production.
+
+## 📈 Performance Optimizations
+
+The application includes several performance optimizations to ensure a smooth user experience:
+
+### Exchange Rate Fetching
+
+The `useExchangeRate` hook has been optimized for performance:
+
+- **Caching System**: Exchange rates are cached for 5 minutes to reduce unnecessary API calls
+- **Smart Fetching**: Only fetches new rates when currencies change or cached data expires
+- **API Fallback**: Automatically falls back to Coinbase API if CoinGecko fails
+- **Periodic Updates**: Refreshes rates every 60 seconds to keep data current
+- **Loading States**: Provides visual feedback during rate fetching
+- **Error Handling**: Gracefully handles API errors with clear user feedback
+
+### UI Responsiveness
+
+- Loading indicators show when exchange rates are being fetched
+- Input fields remain responsive even during API calls
+- Swap button is disabled during rate loading to prevent invalid trades
+

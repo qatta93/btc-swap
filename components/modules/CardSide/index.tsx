@@ -21,6 +21,7 @@ interface CardSideProps {
   setSellAmount: (val: string) => void;
   setBuyAmount: (val: string) => void;
   handleSwap: () => void;
+  isRateLoading?: boolean;
 }
 
 export const CardSide = ({
@@ -36,6 +37,7 @@ export const CardSide = ({
   setSellAmount,
   setBuyAmount,
   handleSwap,
+  isRateLoading = false,
 }: CardSideProps) => {
   const { handleTopChange, handleBottomChange } = useCardSide({
     isFront,
@@ -55,6 +57,7 @@ export const CardSide = ({
         conversionRate={rateSell}
         targetCurrencySymbol={buyCryptoOption.symbol}
         isFlipping={isFlipping}
+        isRateLoading={isRateLoading}
       />
 
       <div className="flex justify-center relative z-10 my-[4px]">
@@ -80,6 +83,7 @@ export const CardSide = ({
         conversionRate={rateBuy}
         targetCurrencySymbol={sellCryptoOption.symbol}
         isFlipping={isFlipping}
+        isRateLoading={isRateLoading}
       />
     </div>
   );

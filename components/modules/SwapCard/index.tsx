@@ -32,6 +32,7 @@ export default function SwapCard() {
     toggleSwapDirection,
     rate,
     error,
+    isRateLoading,
     isModalOpen,
     setIsModalOpen,
     handleConfirm,
@@ -49,7 +50,7 @@ export default function SwapCard() {
   const rateBtcToUsd = isReversed ? (rate ? 1 / rate : 0) : rate ?? 0;
 
   const numericSellAmount = parseFloat(sellAmount);
-  const isValidTrade = !isNaN(numericSellAmount) && numericSellAmount > 0;
+  const isValidTrade = !isNaN(numericSellAmount) && numericSellAmount > 0 && !isRateLoading;
 
   const handleButtonClick = () => {
     setIsLoading(true);
@@ -86,6 +87,7 @@ export default function SwapCard() {
             setBuyAmount={handleBuyChange}
             rateSell={rateUsdToBtc}
             rateBuy={rateBtcToUsd}
+            isRateLoading={isRateLoading}
           />
           <div className="absolute w-full h-full rotateX-180 backface-hidden">
             <CardSide
@@ -101,6 +103,7 @@ export default function SwapCard() {
               setBuyAmount={handleSellChange}
               rateSell={rateBtcToUsd}
               rateBuy={rateUsdToBtc}
+              isRateLoading={isRateLoading}
             />
           </div>
         </motion.div>
@@ -109,11 +112,17 @@ export default function SwapCard() {
       <div className="p-5 relative">
         <Button
           onClick={handleButtonClick}
-          disabled={!isValidTrade || isLoading}>
+          disabled={!isValidTrade || isLoading || isRateLoading}>
           {isLoading ? (
             <span className="flex items-center gap-2 justify-center">
               <Loader2 className="w-6 h-6 animate-spin" />
               {content?.general.loading}
+            </span>
+          ) : isRateLoading ? (
+            <span className="flex items-center gap-2 justify-center">
+              <Loader2 className="w-6 h-6 animate-spin" />
+              {"Loading rates..."}
+              {/* {content?.general.loadingRates || "Loading rates..."} */}
             </span>
           ) : (
             content?.swapCard.button

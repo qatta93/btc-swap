@@ -17,6 +17,7 @@ interface CurrencyInputProps {
   conversionRate?: number;
   targetCurrencySymbol?: string;
   isFlipping: boolean;
+  isRateLoading?: boolean;
 }
 
 export function CurrencyInput({
@@ -27,6 +28,7 @@ export function CurrencyInput({
   conversionRate,
   targetCurrencySymbol,
   isFlipping,
+  isRateLoading = false,
 }: CurrencyInputProps) {
   const formattedRate =
     conversionRate && conversionRate > 1
@@ -82,12 +84,14 @@ export function CurrencyInput({
             animate={{ opacity: isFlipping ? 0 : 1, y: isFlipping ? -10 : 0 }}
             transition={{ duration: 0.3 }}
             className="text-xs text-muted-foreground mt-1 space-y-0.5 min-h-[1rem]">
-            {conversionRate !== 0 ? (
+            {isRateLoading ? (
+              <div className="h-4 w-32 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
+            ) : conversionRate !== 0 ? (
               <div>
                 1 {crypto.symbol} = {formattedRate} {targetCurrencySymbol}
               </div>
             ) : (
-              <div className="h-4 w-32 bg-gray-200 rounded animate-pulse" />
+              <div className="h-4 w-32 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
             )}
           </motion.div>
         ) : (
