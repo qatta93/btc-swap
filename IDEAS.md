@@ -23,7 +23,6 @@ Below is a list of possible improvements and features that can be implemented to
 ## 🔄 Exchange Functionality
 
 - Add support for more cryptocurrencies (ETH, LTC, USDT, etc.)
-- Real-time exchange rate updates via WebSocket or polling
 - Transaction history log
 - Estimated fees preview before confirming a swap
 - Min/max amount validation based on liquidity

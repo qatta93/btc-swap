@@ -11,12 +11,14 @@ BTC Swap is a modern web application for swapping cryptocurrencies. Built with t
 - 🌐 Deployed on Vercel
 - 🔄 Optimized API calls with caching and periodic updates
 - 📝 Prepared for CMS integration with type-safe content management using Zustand
+- 📊 Google Analytics integration ready with comprehensive event tracking
+- 🌙 Dark/Light mode toggle with smooth theme transitions
 
 ## 🔗 Live Demo
 
 Check out the live version of the app:
 
-👉 [https://btc-swap-qatta93s-projects.vercel.app/](https://btc-swap-qatta93s-projects.vercel.app/)
+👉 [https://btc-swap.vercel.app/](https://btc-swap.vercel.app/)
 
 ## 📦 Tech Stack
 
