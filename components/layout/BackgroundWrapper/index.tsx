@@ -14,7 +14,7 @@ export default function BackgroundWrapper({
   const { icons, hoveredIcon, setHoveredIcon } = useBackgroundWrapper();
 
   return (
-    <div className="fixed inset-0 overflow-y-auto overflow-x-hidden h-screen max-h-[100dvh] flex items-center justify-center bg-background px-4">
+    <div className="fixed inset-0 overflow-hidden h-screen max-h-[100dvh] flex items-center justify-center bg-background px-4">
       <div className="absolute inset-0 bg-gradient-to-tr from-indigo-50 to-violet-500 opacity-60" />
       <div className="absolute inset-0 bg-white/5 backdrop-blur-3xl pointer-events-none" />
       {children}
