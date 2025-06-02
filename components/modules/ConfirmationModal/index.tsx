@@ -94,8 +94,8 @@ export default function SwapConfirmationModal({
             </h2>
             <Button
               onClick={onClose}
-              className="h-10 w-10 p-0 flex items-center justify-center rounded-full bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700">
-              <X className="h-8 w-8 text-gray-700" />
+              className="h-10 w-10 p-0 flex items-center justify-center rounded-full bg-transparent hover:bg-gray-100 dark:hover:bg-gray-600">
+              <X className="h-8 w-8 text-gray-700 dark:text-white" />
             </Button>
           </div>
         </div>
@@ -103,7 +103,7 @@ export default function SwapConfirmationModal({
         <div className="px-6 pb-6">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <div className="text-2xl text-gray-900">
+              <div className="text-2xl text-gray-900 dark:text-white">
                 {formatDisplayValue(sellAmount)}
                 <span className="ml-2 font-semibold">{fromSymbol}</span>
               </div>
@@ -150,7 +150,7 @@ export default function SwapConfirmationModal({
                     {content?.confirmationModal.fee}
                   </span>
                   <Info
-                    className="ml-1 h-3 w-3 text-gray-400 dark:text-white cursor-pointer"
+                    className="ml-1 h-3 w-3 text-gray-400 dark:text-white cursor-pointer focus:outline-none focus:ring-0"
                     data-tooltip-id="tooltip"
                     data-tooltip-content={content?.confirmationModal.feeTooltip}
                     onMouseEnter={() => trackFeeInfoView()}
@@ -166,7 +166,7 @@ export default function SwapConfirmationModal({
                     {content?.confirmationModal.networkCost}
                   </span>
                   <Info
-                    className="ml-1 h-3 w-3 text-gray-400 dark:text-white cursor-pointer"
+                    className="ml-1 h-3 w-3 text-gray-400 dark:text-white cursor-pointer focus:outline-none focus:ring-0"
                     data-tooltip-id="tooltip"
                     data-tooltip-content={
                       content?.confirmationModal.networkCostTooltip

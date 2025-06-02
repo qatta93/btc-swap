@@ -138,8 +138,8 @@ export default function SwapSuccessModal({
         <div className="p-6 pb-4 flex justify-end">
           <Button
             onClick={onClose}
-            className="h-10 w-10 p-0 flex items-center justify-center rounded-full bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700">
-            <X className="h-8 w-8 text-gray-700" />
+            className="h-10 w-10 p-0 flex items-center justify-center rounded-full bg-transparent hover:bg-gray-100 dark:hover:bg-gray-600">
+            <X className="h-8 w-8 text-gray-700 dark:text-white" />
           </Button>
         </div>
 
