@@ -60,7 +60,7 @@ export const CardSide = ({
         isRateLoading={isRateLoading}
       />
 
-      <div className="flex justify-center relative z-10 my-[4px]">
+      <div className="flex justify-center relative z-10 my-[4px] mob:my-[10px]">
         <motion.button
           onClick={handleSwap}
           className="bg-white border border-gray-200 rounded-full p-2 shadow-sm dark:bg-dark"
